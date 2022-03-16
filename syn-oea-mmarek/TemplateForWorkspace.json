@@ -2671,7 +2671,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "30815e1c-5d44-4fb7-991e-9dc94a9feada"
+						"spark.autotune.trackingId": "f2d82fc7-9dbc-4714-ba9a-a9e65272f4cd"
 					}
 				},
 				"metadata": {
@@ -2731,7 +2731,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 13
+						"execution_count": 37
 					},
 					{
 						"cell_type": "code",
@@ -2750,7 +2750,7 @@
 							"%run DataGen_py"
 						],
 						"outputs": [],
-						"execution_count": 16
+						"execution_count": 38
 					},
 					{
 						"cell_type": "code",
@@ -2771,7 +2771,7 @@
 							"dataGenerator.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": 17
+						"execution_count": 39
 					}
 				]
 			},
@@ -2881,7 +2881,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f8d5c27c-016b-4981-94f9-50f42eb2d870"
+						"spark.autotune.trackingId": "3f46962a-3a44-4cad-a5bd-278f2c5e6202"
 					}
 				},
 				"metadata": {
@@ -2987,7 +2987,7 @@
 							"\r\n",
 							"    def generate_data(self, num_of_schools, writer):\r\n",
 							"        edfi_data = [self.create_school() for _ in range(num_of_schools)]\r\n",
-							"        #edfi_data_formatted = self.format_edfi_data(edfi_data)\r\n",
+							"        edfi_data_formatted = self.format_edfi_data(edfi_data)\r\n",
 							"\r\n",
 							"        \"\"\" original json version\r\n",
 							"        writer.write(f'EdFi/School.json',list_of_dict_to_json(edfi_data_formatted['Schools']))\r\n",
@@ -3002,6 +3002,8 @@
 							"        writer.write(f'EdFi/StudentSectionAssociations.json',list_of_dict_to_json(edfi_data_formatted['StudentSectionAssociations']))\r\n",
 							"        writer.write(f'EdFi/StaffSectionAssociations.json',list_of_dict_to_json(edfi_data_formatted['StaffSectionAssociations']))\r\n",
 							"        \"\"\"\r\n",
+							"\r\n",
+							"\r\n",
 							"\r\n",
 							"        writer.write(f'EdFi/School.csv',list_of_dict_to_csv(edfi_data_formatted['Schools']))\r\n",
 							"        writer.write(f'EdFi/Student.csv',list_of_dict_to_csv(edfi_data_formatted['Students']))\r\n",
