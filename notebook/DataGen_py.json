@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "dd25a5fc-ed44-4abf-8ab9-d671353a5adf"
+				"spark.autotune.trackingId": "c508b429-0925-4958-8520-12ab541376e2"
 			}
 		},
 		"metadata": {
@@ -772,7 +772,7 @@
 					"        }\r\n",
 					"        for school in data:\r\n",
 					"\r\n",
-					"            print(school, '\\n')\r\n",
+					"            print(school, end = '\\n')\r\n",
 					"\r\n",
 					"            \"\"\"\r\n",
 					"            result['Schools'].append({key: school[key] for key in school if not (key.startswith('_')) })\r\n",
