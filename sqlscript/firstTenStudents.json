@@ -1,0 +1,17 @@
+{
+	"name": "firstTenStudents",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (10) [student_id]\n,[school_year]\n,[student_id_pseudonym]\n FROM [dbo].[studentattendance_lookup]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqls2_contoso_sis",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
