@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "7fa9687d-9c3c-4d37-98b3-283a960e460d"
+				"spark.autotune.trackingId": "a1507dc7-9990-469e-9e9b-65b73287fd39"
 			}
 		},
 		"metadata": {
@@ -771,9 +771,7 @@
 					"\r\n",
 					"        }\r\n",
 					"        for school in data:\r\n",
-					"\r\n",
 					"            print(school, end = '\\n')\r\n",
-					"\r\n",
 					"            print(\"**********************************\", end = '\\n')\r\n",
 					"\r\n",
 					"            \"\"\"\r\n",
