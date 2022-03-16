@@ -2671,7 +2671,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "c4543e5e-1f4c-438c-99b8-136b5456d9f6"
+						"spark.autotune.trackingId": "13be963d-aa2d-465a-b3ca-e378697fc4f5"
 					}
 				},
 				"metadata": {
@@ -2731,7 +2731,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 51
+						"execution_count": 54
 					},
 					{
 						"cell_type": "code",
@@ -2750,7 +2750,7 @@
 							"%run DataGen_py"
 						],
 						"outputs": [],
-						"execution_count": 50
+						"execution_count": 55
 					},
 					{
 						"cell_type": "code",
@@ -2771,7 +2771,7 @@
 							"dataGenerator.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": 53
+						"execution_count": 56
 					}
 				]
 			},
@@ -2881,7 +2881,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "056e1b35-4aef-4200-af18-6632688d1565"
+						"spark.autotune.trackingId": "10714d12-4b71-4c40-9365-1718f90157d9"
 					}
 				},
 				"metadata": {
@@ -3636,7 +3636,7 @@
 							"\r\n",
 							"        }\r\n",
 							"        for school in data:\r\n",
-							"            print(school, end = '\\n')\r\n",
+							"            #print(school, end = '\\n')\r\n",
 							"            print(\"**********************************\", end = '\\n')\r\n",
 							"\r\n",
 							"            \"\"\"\r\n",
