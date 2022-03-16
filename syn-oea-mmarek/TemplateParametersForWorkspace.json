@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "syn-oea-mmarek"
+		},
+		"LS_Azure_SQL_DB_connectionString": {
+			"value": ""
+		},
+		"LS_SQL_Serverless_OEA_connectionString": {
+			"value": ""
+		},
+		"syn-oea-mmarek-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"LS_ADLS_OEA_properties_typeProperties_url": {
+			"value": "https://stoeammarek.dfs.core.windows.net"
+		},
+		"LS_HTTP_properties_typeProperties_url": {
+			"value": "@{linkedService().baseURL}"
+		},
+		"LS_KeyVault_OEA_properties_typeProperties_baseUrl": {
+			"value": "https://kv-oea-mmarek.vault.azure.net/"
+		},
+		"syn-oea-mmarek-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://stoeammarek.dfs.core.windows.net"
+		}
+	}
+}
