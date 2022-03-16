@@ -2671,7 +2671,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "93e623d9-2cbe-46ed-84b0-f742195381e4"
+						"spark.autotune.trackingId": "b39b37ef-c6a3-4be2-9c49-dd11d3eb0d4a"
 					}
 				},
 				"metadata": {
@@ -2750,7 +2750,7 @@
 							"%run DataGen_py"
 						],
 						"outputs": [],
-						"execution_count": 46
+						"execution_count": 48
 					},
 					{
 						"cell_type": "code",
@@ -2771,7 +2771,7 @@
 							"dataGenerator.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": 47
+						"execution_count": 49
 					}
 				]
 			},
@@ -2881,7 +2881,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "19b4fac4-fb7e-4273-a0ed-6fb3a4018cc1"
+						"spark.autotune.trackingId": "4b0f0a59-7a0a-4df7-8bf4-a2018b1543e4"
 					}
 				},
 				"metadata": {
@@ -3638,6 +3638,8 @@
 							"        for school in data:\r\n",
 							"\r\n",
 							"            print(school, end = '\\n')\r\n",
+							"\r\n",
+							"            print(\"**********************************\", end = '\\n')\r\n",
 							"\r\n",
 							"            \"\"\"\r\n",
 							"            result['Schools'].append({key: school[key] for key in school if not (key.startswith('_')) })\r\n",
