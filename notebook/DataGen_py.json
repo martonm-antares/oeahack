@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "899b8d92-20a1-4674-a6c7-5c9941524126"
+				"spark.autotune.trackingId": "6b9e8550-3aa7-44f6-a1ac-7f627e310b57"
 			}
 		},
 		"metadata": {
@@ -122,7 +122,7 @@
 					"\r\n",
 					"    def generate_data(self, num_of_schools, writer):\r\n",
 					"        edfi_data = [self.create_school() for _ in range(num_of_schools)]\r\n",
-					"        #edfi_data_formatted = self.format_edfi_data(edfi_data)\r\n",
+					"        edfi_data_formatted = self.format_edfi_data(edfi_data)\r\n",
 					"\r\n",
 					"        \"\"\" original json version\r\n",
 					"        writer.write(f'EdFi/School.json',list_of_dict_to_json(edfi_data_formatted['Schools']))\r\n",
