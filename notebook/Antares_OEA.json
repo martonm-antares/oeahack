@@ -1,6 +1,7 @@
 {
-	"name": "3_data_generation_demo",
+	"name": "Antares_OEA",
 	"properties": {
+		"description": "This notebook contains test data generation and ingestion into stage2",
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
@@ -17,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6e08b8ea-221f-47ea-83d1-bc05ae843ba6"
+				"spark.autotune.trackingId": "7f824e0a-0bfc-41cb-9a22-a9c231003cef"
 			}
 		},
 		"metadata": {
@@ -58,11 +59,7 @@
 					}
 				},
 				"source": [
-					"# Data Generation Example\r\n",
-					"This notebook demonstrates how to use the EdFiDataGenerator to generate test student data in the Ed-Fi format for as many schools as specified.\r\n",
-					"\r\n",
-					"To generate test Ed-Fi data, simple run this notebook.\r\n",
-					"The test data will be generated in json format and written to stage1np/test_data in your data lake."
+					"# Antares OEA Hack Assessment"
 				]
 			},
 			{
@@ -79,9 +76,9 @@
 					}
 				},
 				"source": [
-					"%run OEA_py"
+					"%run /OEA_py"
 				],
-				"execution_count": null
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
@@ -99,7 +96,7 @@
 				"source": [
 					"%run DataGen_py"
 				],
-				"execution_count": null
+				"execution_count": 7
 			},
 			{
 				"cell_type": "code",
@@ -115,11 +112,11 @@
 					}
 				},
 				"source": [
-					"dg = EdFiDataGenerator()\r\n",
-					"writer = DataLakeWriter(oea.stage1np + '/test_data')\r\n",
-					"dg.generate_data(2, writer)"
+					"dataGenerator = EdFiDataGenerator()\r\n",
+					"writer = DataLakeWriter(oea.stage1np + '/gen_test_data')\r\n",
+					"dataGenerator.generate_data(2, writer)"
 				],
-				"execution_count": null
+				"execution_count": 8
 			}
 		]
 	}
