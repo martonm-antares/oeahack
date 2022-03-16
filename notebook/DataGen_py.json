@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "67acc5f1-55cf-40a7-972e-ad4a3c6ebb24"
+				"spark.autotune.trackingId": "e2230960-8131-4f34-8162-1991be9eafa5"
 			}
 		},
 		"metadata": {
@@ -771,6 +771,10 @@
 					"\r\n",
 					"        }\r\n",
 					"        for school in data:\r\n",
+					"\r\n",
+					"            print(school)\r\n",
+					"\r\n",
+					"            \"\"\"\r\n",
 					"            result['Schools'].append({key: school[key] for key in school if not (key.startswith('_')) })\r\n",
 					"            result['Students'] += school['_Students']\r\n",
 					"            result['Courses'] += school['_Courses']\r\n",
@@ -782,6 +786,7 @@
 					"            result['Sessions'] += school['_Sessions']\r\n",
 					"            result['StudentSectionAssociations'] += school['_StudentSectionAssociations']\r\n",
 					"            result['StaffSectionAssociations'] += school['_StaffSectionAssociations']\r\n",
+					"            \"\"\"\r\n",
 					"\r\n",
 					"\r\n",
 					"        return result\r\n",
