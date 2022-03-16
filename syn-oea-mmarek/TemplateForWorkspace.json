@@ -2671,7 +2671,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "13be963d-aa2d-465a-b3ca-e378697fc4f5"
+						"spark.autotune.trackingId": "3154d019-d635-40f8-9e77-e9dc04347e28"
 					}
 				},
 				"metadata": {
@@ -2731,7 +2731,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 54
+						"execution_count": 57
 					},
 					{
 						"cell_type": "code",
@@ -2881,7 +2881,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "10714d12-4b71-4c40-9365-1718f90157d9"
+						"spark.autotune.trackingId": "a69efc11-1cf6-4dd6-9827-4957bb8a052a"
 					}
 				},
 				"metadata": {
@@ -3636,10 +3636,6 @@
 							"\r\n",
 							"        }\r\n",
 							"        for school in data:\r\n",
-							"            #print(school, end = '\\n')\r\n",
-							"            print(\"**********************************\", end = '\\n')\r\n",
-							"\r\n",
-							"            \"\"\"\r\n",
 							"            result['Schools'].append({key: school[key] for key in school if not (key.startswith('_')) })\r\n",
 							"            result['Students'] += school['_Students']\r\n",
 							"            result['Courses'] += school['_Courses']\r\n",
@@ -3651,8 +3647,9 @@
 							"            result['Sessions'] += school['_Sessions']\r\n",
 							"            result['StudentSectionAssociations'] += school['_StudentSectionAssociations']\r\n",
 							"            result['StaffSectionAssociations'] += school['_StaffSectionAssociations']\r\n",
-							"            \"\"\"\r\n",
+							"            \r\n",
 							"\r\n",
+							"        print(result['Schools'])\r\n",
 							"\r\n",
 							"        return result\r\n",
 							""
