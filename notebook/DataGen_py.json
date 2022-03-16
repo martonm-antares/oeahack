@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "c6839383-8368-46ea-94c2-7fecafbdccff"
+				"spark.autotune.trackingId": "304ee9ac-5435-4146-9a9c-76ffe386b60b"
 			}
 		},
 		"metadata": {
@@ -63,6 +63,9 @@
 					"        for column_name in list_of_dict[0].keys(): \r\n",
 					"            if not column_name.startswith('_'): header.append(column_name)\r\n",
 					"        csv_str += \",\".join(header) + \"\\n\"\r\n",
+					"\r\n",
+					"    print(\"start\")\r\n",
+					"    print(csv_str, end = \"\\n\")\r\n",
 					"\r\n",
 					"    for row in list_of_dict:\r\n",
 					"        csv_str += obj_to_csv(row) + \"\\n\"\r\n",
@@ -783,8 +786,6 @@
 					"            result['StudentSectionAssociations'] += school['_StudentSectionAssociations']\r\n",
 					"            result['StaffSectionAssociations'] += school['_StaffSectionAssociations']\r\n",
 					"            \r\n",
-					"\r\n",
-					"        print(result['Schools'])\r\n",
 					"\r\n",
 					"        return result\r\n",
 					""
