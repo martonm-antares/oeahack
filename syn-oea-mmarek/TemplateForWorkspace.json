@@ -2671,7 +2671,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3154d019-d635-40f8-9e77-e9dc04347e28"
+						"spark.autotune.trackingId": "b47ed199-7167-4313-bda6-4bae7c3ab031"
 					}
 				},
 				"metadata": {
@@ -2731,7 +2731,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 57
+						"execution_count": 58
 					},
 					{
 						"cell_type": "code",
@@ -2750,7 +2750,7 @@
 							"%run DataGen_py"
 						],
 						"outputs": [],
-						"execution_count": 55
+						"execution_count": 59
 					},
 					{
 						"cell_type": "code",
@@ -2771,7 +2771,7 @@
 							"dataGenerator.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": 56
+						"execution_count": 60
 					}
 				]
 			},
@@ -2881,7 +2881,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "a69efc11-1cf6-4dd6-9827-4957bb8a052a"
+						"spark.autotune.trackingId": "417159ed-c074-4a6e-a5ff-8f922e1dff71"
 					}
 				},
 				"metadata": {
@@ -2928,6 +2928,9 @@
 							"        for column_name in list_of_dict[0].keys(): \r\n",
 							"            if not column_name.startswith('_'): header.append(column_name)\r\n",
 							"        csv_str += \",\".join(header) + \"\\n\"\r\n",
+							"\r\n",
+							"    print(\"start\")\r\n",
+							"    print(csv_str, end = \"\\n\")\r\n",
 							"\r\n",
 							"    for row in list_of_dict:\r\n",
 							"        csv_str += obj_to_csv(row) + \"\\n\"\r\n",
@@ -3648,8 +3651,6 @@
 							"            result['StudentSectionAssociations'] += school['_StudentSectionAssociations']\r\n",
 							"            result['StaffSectionAssociations'] += school['_StaffSectionAssociations']\r\n",
 							"            \r\n",
-							"\r\n",
-							"        print(result['Schools'])\r\n",
 							"\r\n",
 							"        return result\r\n",
 							""
