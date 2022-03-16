@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "9f5877f5-99d9-4b73-93ec-25b6810bfd1d"
+				"spark.autotune.trackingId": "899b8d92-20a1-4674-a6c7-5c9941524126"
 			}
 		},
 		"metadata": {
@@ -137,7 +137,7 @@
 					"        writer.write(f'EdFi/StudentSectionAssociations.json',list_of_dict_to_json(edfi_data_formatted['StudentSectionAssociations']))\r\n",
 					"        writer.write(f'EdFi/StaffSectionAssociations.json',list_of_dict_to_json(edfi_data_formatted['StaffSectionAssociations']))\r\n",
 					"        \"\"\"\r\n",
-					"        \"\"\"\r\n",
+					"\r\n",
 					"        writer.write(f'EdFi/School.csv',list_of_dict_to_csv(edfi_data_formatted['Schools']))\r\n",
 					"        writer.write(f'EdFi/Student.csv',list_of_dict_to_csv(edfi_data_formatted['Students']))\r\n",
 					"        writer.write(f'EdFi/StudentSchoolAssociation.csv',list_of_dict_to_csv(edfi_data_formatted['StudentSchoolAssociations']))\r\n",
@@ -149,19 +149,8 @@
 					"        writer.write(f'EdFi/Staffs.csv',list_of_dict_to_csv(edfi_data_formatted['Staffs']))\r\n",
 					"        writer.write(f'EdFi/StudentSectionAssociations.csv',list_of_dict_to_csv(edfi_data_formatted['StudentSectionAssociations']))\r\n",
 					"        writer.write(f'EdFi/StaffSectionAssociations.csv',list_of_dict_to_csv(edfi_data_formatted['StaffSectionAssociations']))\r\n",
-					"        \"\"\"\r\n",
 					"\r\n",
-					"        writer.write(f'EdFi/School.csv',list_of_dict_to_csv(edfi_data['Schools']))\r\n",
-					"        writer.write(f'EdFi/Student.csv',list_of_dict_to_csv(edfi_data['Students']))\r\n",
-					"        writer.write(f'EdFi/StudentSchoolAssociation.csv',list_of_dict_to_csv(edfi_data['StudentSchoolAssociations']))\r\n",
-					"        writer.write(f'EdFi/Course.csv',list_of_dict_to_csv(edfi_data['Courses']))\r\n",
-					"        writer.write(f'EdFi/Calendar.csv',list_of_dict_to_csv(edfi_data['Calendars']))\r\n",
-					"        writer.write(f'EdFi/Sessions.csv',list_of_dict_to_csv(edfi_data['Sessions']))\r\n",
-					"        writer.write(f'EdFi/StaffSchoolAssociations.csv',list_of_dict_to_csv(edfi_data['StaffSchoolAssociations']))\r\n",
-					"        writer.write(f'EdFi/Sections.csv',list_of_dict_to_csv(edfi_data['Sections']))\r\n",
-					"        writer.write(f'EdFi/Staffs.csv',list_of_dict_to_csv(edfi_data['Staffs']))\r\n",
-					"        writer.write(f'EdFi/StudentSectionAssociations.csv',list_of_dict_to_csv(edfi_data['StudentSectionAssociations']))\r\n",
-					"        writer.write(f'EdFi/StaffSectionAssociations.csv',list_of_dict_to_csv(edfi_data['StaffSectionAssociations']))\r\n",
+					"\r\n",
 					"\r\n",
 					"    def create_school(self):\r\n",
 					"        school_type = random.choice(SCHOOL_TYPES)\r\n",
