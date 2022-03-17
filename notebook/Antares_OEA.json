@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e166545f-5e49-497e-8421-4654b5781d0e"
+				"spark.autotune.trackingId": "8063412c-44de-4279-ad51-bef9fde330c5"
 			}
 		},
 		"metadata": {
@@ -78,7 +78,7 @@
 				"source": [
 					"%run /OEA_py"
 				],
-				"execution_count": 62
+				"execution_count": 69
 			},
 			{
 				"cell_type": "code",
@@ -117,6 +117,62 @@
 					"dataGenerator.generate_data(2, writer)"
 				],
 				"execution_count": 64
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"%run DataGenUtil"
+				],
+				"execution_count": 73
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"%run ContosoDataGenerator"
+				],
+				"execution_count": 74
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"dataGen = ContosoDataGenerator()\r\n",
+					"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data')\r\n",
+					"dataGen.generate_data(2, writer)"
+				],
+				"execution_count": null
 			}
 		]
 	}

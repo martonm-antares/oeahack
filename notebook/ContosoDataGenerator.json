@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "443d3155-2cdd-452b-b609-771628fa051f"
+				"spark.autotune.trackingId": "e495d357-a0f7-453a-9306-56c388418bbc"
 			}
 		},
 		"metadata": {
@@ -36,7 +36,7 @@
 					"import random\r\n",
 					"import math\r\n",
 					"import pandas as pd\r\n",
-					"import DataGenUtil\r\n",
+					"#import DataGenUtil\r\n",
 					"from faker import Faker\r\n",
 					"\r\n",
 					"\r\n",
