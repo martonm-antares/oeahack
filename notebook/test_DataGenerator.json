@@ -1,0 +1,77 @@
+{
+	"name": "test_DataGenerator",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "f86a8676-c6d5-45d1-8a40-ec280110b120"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"import os\r\n",
+					"import shutil\r\n",
+					"import DataGenUtil\r\n",
+					"import ContosoDataGenerator\r\n",
+					"import M365DataGenerator\r\n",
+					"import MSInsightsDataGenerator\r\n",
+					"import EdFiDataGenerator\r\n",
+					"#import OneRosterDataGenerator\r\n",
+					"\r\n",
+					"destination = 'tmp_generated_data'\r\n",
+					"if os.path.exists(destination): shutil.rmtree(destination)\r\n",
+					"os.makedirs(destination)\r\n",
+					"\r\n",
+					"def test_ContosoDataGenerator():\r\n",
+					"    dg = ContosoDataGenerator.ContosoDataGenerator()\r\n",
+					"    writer = DataGenUtil.FileWriter(destination)\r\n",
+					"    dg.generate_data(2, writer)\r\n",
+					"    \r\n",
+					"def test_M365DataGenerator():\r\n",
+					"    dg = M365DataGenerator.M365DataGenerator()\r\n",
+					"    writer = DataGenUtil.FileWriter(destination)\r\n",
+					"    dg.generate_data(1, writer)\r\n",
+					"    \r\n",
+					"def test_MSInsightsDataGenerator():\r\n",
+					"    dg = MSInsightsDataGenerator.MSInsightsDataGenerator()\r\n",
+					"    writer = DataGenUtil.FileWriter(destination)\r\n",
+					"    dg.generate_data(2, writer)\r\n",
+					"\r\n",
+					"def test_EdFiDataGenerator():\r\n",
+					"    dg = EdFiDataGenerator.EdFiDataGenerator()\r\n",
+					"    writer = DataGenUtil.FileWriter(destination)\r\n",
+					"    dg.generate_data(2, writer)\r\n",
+					"\r\n",
+					"#test_ContosoDataGenerator()\r\n",
+					"test_M365DataGenerator()\r\n",
+					"#test_EdFiDataGenerator()\r\n",
+					"#test_MSInsightsDataGenerator()"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
