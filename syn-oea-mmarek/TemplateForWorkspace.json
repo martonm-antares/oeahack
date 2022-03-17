@@ -2765,7 +2765,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e166545f-5e49-497e-8421-4654b5781d0e"
+						"spark.autotune.trackingId": "8063412c-44de-4279-ad51-bef9fde330c5"
 					}
 				},
 				"metadata": {
@@ -2825,7 +2825,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 62
+						"execution_count": 69
 					},
 					{
 						"cell_type": "code",
@@ -2866,6 +2866,65 @@
 						],
 						"outputs": [],
 						"execution_count": 64
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"%run DataGenUtil"
+						],
+						"outputs": [],
+						"execution_count": 73
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"%run ContosoDataGenerator"
+						],
+						"outputs": [],
+						"execution_count": 74
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"dataGen = ContosoDataGenerator()\r\n",
+							"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data')\r\n",
+							"dataGen.generate_data(2, writer)"
+						],
+						"outputs": [],
+						"execution_count": null
 					}
 				]
 			},
@@ -3105,7 +3164,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "443d3155-2cdd-452b-b609-771628fa051f"
+						"spark.autotune.trackingId": "edf3de29-9680-441a-9a4d-2d4d468c143b"
 					}
 				},
 				"metadata": {
@@ -3123,12 +3182,13 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"import datetime\r\n",
 							"import random\r\n",
 							"import math\r\n",
 							"import pandas as pd\r\n",
-							"import DataGenUtil\r\n",
+							"#import DataGenUtil\r\n",
 							"from faker import Faker\r\n",
 							"\r\n",
 							"\r\n",
@@ -8107,7 +8167,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "b8e79aaf-7a35-4cac-a9d8-f071d6580abe"
+						"spark.autotune.trackingId": "f86a8676-c6d5-45d1-8a40-ec280110b120"
 					}
 				},
 				"metadata": {
@@ -8125,7 +8185,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import os\r\n",
 							"import shutil\r\n",
