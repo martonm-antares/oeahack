@@ -3164,7 +3164,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "435ea14e-b41d-4d9f-a482-7767f6fbd54c"
+						"spark.autotune.trackingId": "161f287f-91ef-4abc-8466-405efbc97781"
 					}
 				},
 				"metadata": {
@@ -3294,10 +3294,10 @@
 							"            school_data = self.create_school(n)\r\n",
 							"            schools.append(school_data.pop('School'))\r\n",
 							"            for key in school_data.keys(): \r\n",
-							"                data_str = DataGenUtil.list_of_dict_to_csv(school_data[key])\r\n",
+							"                data_str = list_of_dict_to_csv(school_data[key])\r\n",
 							"                writer.write(f\"contoso_sis/{key}.csv\", data_str)\r\n",
 							"\r\n",
-							"        data_str = DataGenUtil.list_of_dict_to_csv(schools)\r\n",
+							"        data_str = list_of_dict_to_csv(schools)\r\n",
 							"        writer.write('contoso_sis/School.csv', data_str)        \r\n",
 							"\r\n",
 							"    def create_school(self, school_id):\r\n",
