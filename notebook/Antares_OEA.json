@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "160bea23-905d-4e43-83d9-dc828b54df6d"
+				"spark.autotune.trackingId": "6bd2709d-a38a-4aff-b5dc-b07873268d89"
 			}
 		},
 		"metadata": {
@@ -78,7 +78,7 @@
 				"source": [
 					"%run /OEA_py"
 				],
-				"execution_count": 75
+				"execution_count": 82
 			},
 			{
 				"cell_type": "code",
@@ -150,9 +150,9 @@
 					}
 				},
 				"source": [
-					"%run ContosoDataGenerator"
+					"%run M365DataGenerator"
 				],
-				"execution_count": 77
+				"execution_count": 83
 			},
 			{
 				"cell_type": "code",
@@ -168,11 +168,11 @@
 					}
 				},
 				"source": [
-					"dataGen = ContosoDataGenerator()\r\n",
-					"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data')\r\n",
+					"dataGen = M365DataGenerator()\r\n",
+					"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data_m365')\r\n",
 					"dataGen.generate_data(2, writer)"
 				],
-				"execution_count": 78
+				"execution_count": 84
 			}
 		]
 	}
