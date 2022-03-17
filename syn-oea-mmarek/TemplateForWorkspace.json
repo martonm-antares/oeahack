@@ -2765,7 +2765,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "8063412c-44de-4279-ad51-bef9fde330c5"
+						"spark.autotune.trackingId": "160bea23-905d-4e43-83d9-dc828b54df6d"
 					}
 				},
 				"metadata": {
@@ -2825,7 +2825,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 69
+						"execution_count": 75
 					},
 					{
 						"cell_type": "code",
@@ -2884,7 +2884,7 @@
 							"%run DataGenUtil"
 						],
 						"outputs": [],
-						"execution_count": 73
+						"execution_count": 76
 					},
 					{
 						"cell_type": "code",
@@ -2903,7 +2903,7 @@
 							"%run ContosoDataGenerator"
 						],
 						"outputs": [],
-						"execution_count": 74
+						"execution_count": 77
 					},
 					{
 						"cell_type": "code",
@@ -2924,7 +2924,7 @@
 							"dataGen.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 78
 					}
 				]
 			},
@@ -3164,7 +3164,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "edf3de29-9680-441a-9a4d-2d4d468c143b"
+						"spark.autotune.trackingId": "435ea14e-b41d-4d9f-a482-7767f6fbd54c"
 					}
 				},
 				"metadata": {
@@ -3188,8 +3188,55 @@
 							"import random\r\n",
 							"import math\r\n",
 							"import pandas as pd\r\n",
-							"#import DataGenUtil\r\n",
 							"from faker import Faker\r\n",
+							"\r\n",
+							"# DataGenUtils\r\n",
+							"def list_of_dict_to_csv(list_of_dict, includeHeaders = True):\r\n",
+							"    csv_str = ''\r\n",
+							"    if includeHeaders == True:\r\n",
+							"        header = []\r\n",
+							"        for column_name in list_of_dict[0].keys(): \r\n",
+							"            if not column_name.startswith('_'): header.append(column_name)\r\n",
+							"        csv_str += \",\".join(header) + \"\\n\"\r\n",
+							"\r\n",
+							"    for row in list_of_dict:\r\n",
+							"        csv_str += obj_to_csv(row) + \"\\n\"\r\n",
+							"\r\n",
+							"    return csv_str\r\n",
+							"\r\n",
+							"def obj_to_csv(obj):\r\n",
+							"    csv = ''\r\n",
+							"    for key in obj:\r\n",
+							"        if not (key.startswith('_')): csv += str(obj[key]) + ','\r\n",
+							"    return csv[:-1]\r\n",
+							"\r\n",
+							"def list_of_dict_to_json(list_of_dict):\r\n",
+							"    json_str = '['\r\n",
+							"    for row in list_of_dict:\r\n",
+							"        json_str += obj_to_json(row) + \",\\n\"\r\n",
+							"    return json_str[:-2] + ']'\r\n",
+							"\r\n",
+							"def obj_to_json(obj):\r\n",
+							"    json_dict = {}\r\n",
+							"    for key in obj:\r\n",
+							"        if not (key.startswith('_')): json_dict[key] = obj[key]\r\n",
+							"    return json.dumps(json_dict)\r\n",
+							"\r\n",
+							"class FileWriter:\r\n",
+							"    def __init__(self, root_destination=None):\r\n",
+							"        if not root_destination: self.root_destination = ''\r\n",
+							"        elif not root_destination.endswith('/'): self.root_destination = root_destination + '/'\r\n",
+							"        else: self.root_destination = root_destination\r\n",
+							"        self.writers = {}\r\n",
+							"\r\n",
+							"    def write(self, path_and_filename, data_str):\r\n",
+							"        path_and_filename = self.root_destination + path_and_filename\r\n",
+							"        if path_and_filename not in self.writers.keys():\r\n",
+							"            if not os.path.exists(os.path.dirname(path_and_filename)):\r\n",
+							"                os.makedirs(os.path.dirname(path_and_filename))\r\n",
+							"            self.writers[path_and_filename] = open(path_and_filename, 'a')\r\n",
+							"        \r\n",
+							"        self.writers[path_and_filename].write(data_str)    \r\n",
 							"\r\n",
 							"\r\n",
 							"SUBJECTS = ['Math - Algebra', 'Math - Geometry', 'English Language', 'History - World History',\r\n",
