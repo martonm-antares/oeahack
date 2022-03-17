@@ -2765,7 +2765,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "160bea23-905d-4e43-83d9-dc828b54df6d"
+						"spark.autotune.trackingId": "1fd8c397-1d86-493b-8732-8fc00d4d07cb"
 					}
 				},
 				"metadata": {
@@ -2790,7 +2790,8 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -2825,7 +2826,7 @@
 							"%run /OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 75
+						"execution_count": 82
 					},
 					{
 						"cell_type": "code",
@@ -2900,10 +2901,10 @@
 							}
 						},
 						"source": [
-							"%run ContosoDataGenerator"
+							"%run M365DataGenerator"
 						],
 						"outputs": [],
-						"execution_count": 77
+						"execution_count": 83
 					},
 					{
 						"cell_type": "code",
@@ -2919,12 +2920,12 @@
 							}
 						},
 						"source": [
-							"dataGen = ContosoDataGenerator()\r\n",
-							"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data')\r\n",
+							"dataGen = M365DataGenerator()\r\n",
+							"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data_m365')\r\n",
 							"dataGen.generate_data(2, writer)"
 						],
 						"outputs": [],
-						"execution_count": 78
+						"execution_count": 84
 					}
 				]
 			},
@@ -3164,7 +3165,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "161f287f-91ef-4abc-8466-405efbc97781"
+						"spark.autotune.trackingId": "62089197-f2a5-4f4a-a4af-294e14b1e680"
 					}
 				},
 				"metadata": {
@@ -3182,7 +3183,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import datetime\r\n",
 							"import random\r\n",
@@ -5165,7 +5165,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3af1b393-7c8e-4af0-a181-ebe6b4a41bfc"
+						"spark.autotune.trackingId": "d7d41a20-6b17-435f-9871-a709c8ff4403"
 					}
 				},
 				"metadata": {
@@ -5238,9 +5238,9 @@
 							"            for key in m365_data.keys(): \r\n",
 							"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\r\n",
 							"\r\n",
-							"            writer.write(f'contoso_sis/{datetime_str}/studentattendance/part1.csv', school_data.pop('_attendance'))\r\n",
-							"            writer.write(f'contoso_sis/{datetime_str}/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\r\n",
-							"            writer.write(f'contoso_sis/{datetime_str}/students/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
+							"            writer.write(f'newcontoso_sis/{datetime_str}/studentattendance/part1.csv', school_data.pop('_attendance'))\r\n",
+							"            writer.write(f'newcontoso_sis/{datetime_str}/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\r\n",
+							"            writer.write(f'newcontoso_sis/{datetime_str}/students/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
 							"\r\n",
 							"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\r\n",
 							"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\r\n",
