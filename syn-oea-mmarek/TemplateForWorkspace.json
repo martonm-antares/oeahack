@@ -3529,7 +3529,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6e43b1f3-772e-421e-b0e2-2d6b568378f4"
+						"spark.autotune.trackingId": "26eb63b8-c8c9-458f-8287-c2c6918447af"
 					}
 				},
 				"metadata": {
@@ -3554,13 +3554,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -3600,8 +3602,10 @@
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
-							"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
-							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+							"        oea.ingest_incremental_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+							"        oea.ingest_incremental_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+							"        #oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+							"        #oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
@@ -5253,7 +5257,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fe6fbae3-68d3-4fb4-ac5c-4bf09a949a61"
+						"spark.autotune.trackingId": "fb35de1d-5e56-456e-9099-48435cccadb5"
 					}
 				},
 				"metadata": {
@@ -5326,9 +5330,9 @@
 							"            for key in m365_data.keys(): \r\n",
 							"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\r\n",
 							"\r\n",
-							"            writer.write(f'studentattendance/part1.csv', school_data.pop('_attendance'))\r\n",
-							"            writer.write(f'studentsectionmark/part1.csv', school_data.pop('_section_marks'))\r\n",
-							"            writer.write(f'studentdemographics/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
+							"            writer.write(f'studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\r\n",
+							"            writer.write(f'studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\r\n",
+							"            writer.write(f'studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
 							"\r\n",
 							"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\r\n",
 							"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\r\n",
