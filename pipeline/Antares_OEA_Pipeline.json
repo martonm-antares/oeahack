@@ -77,6 +77,51 @@
 						"type": "BigDataPoolReference"
 					}
 				}
+			},
+			{
+				"name": "if createSQLDB",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ingest to state2np and stage2p",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@pipeline().parameters.createSQLDB",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "create_sql_db",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "create_sql_db",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"storageAccount": {
+										"value": "@pipeline().parameters.storageAccount",
+										"type": "Expression"
+									},
+									"sourceDirectory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									},
+									"stage": "2"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
@@ -87,6 +132,14 @@
 			"sourceDirectory": {
 				"type": "string",
 				"defaultValue": "generated_data"
+			},
+			"createSQLDB": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"createLakeDB": {
+				"type": "bool",
+				"defaultValue": true
 			}
 		},
 		"folder": {
