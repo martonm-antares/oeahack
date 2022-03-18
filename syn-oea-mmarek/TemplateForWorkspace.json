@@ -48,7 +48,7 @@
 				"description": "This pipeline generates test data and stores it in stage1np. It then moves the data through stage 2 (p and np) and then stage 3 (transformed)",
 				"activities": [
 					{
-						"name": "Generate Test Data and move to Stage1np",
+						"name": "Generate Test Data and copy to Stage1np",
 						"type": "SynapseNotebook",
 						"dependsOn": [],
 						"policy": {
@@ -66,11 +66,52 @@
 							},
 							"parameters": {
 								"numberOfSchools": {
-									"value": "2",
+									"value": "1",
 									"type": "int"
 								},
 								"folderName": {
 									"value": "/generated_data",
+									"type": "string"
+								}
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "spark3p1sm",
+								"type": "BigDataPoolReference"
+							}
+						}
+					},
+					{
+						"name": "ingest to state2np and stage2p",
+						"type": "SynapseNotebook",
+						"dependsOn": [
+							{
+								"activity": "Generate Test Data and copy to Stage1np",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "OEA_connector",
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"object_name": {
+									"value": "contoso_sis",
+									"type": "string"
+								},
+								"method_name": {
+									"value": "ingest",
 									"type": "string"
 								}
 							},
@@ -86,6 +127,16 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"storageAccount": {
+						"type": "string",
+						"defaultValue": "stoeammarek"
+					},
+					"sourceDirectory": {
+						"type": "string",
+						"defaultValue": "generated_data"
+					}
+				},
 				"folder": {
 					"name": "OEA_Framework"
 				},
@@ -93,7 +144,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/notebooks/Antares_OEA')]",
-				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]"
+				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]",
+				"[concat(variables('workspaceId'), '/notebooks/OEA_connector')]"
 			]
 		},
 		{
@@ -2821,7 +2873,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "803fe0e9-a7bc-460d-94d0-96210ac07777"
+						"spark.autotune.trackingId": "c335625f-c63f-4271-9177-6eeac28ecaad"
 					}
 				},
 				"metadata": {
@@ -2846,8 +2898,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -3474,23 +3525,45 @@
 					"executorMemory": "28g",
 					"executorCores": 4,
 					"numExecutors": 2,
-					"conf": {}
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "6e43b1f3-772e-421e-b0e2-2d6b568378f4"
+					}
 				},
 				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
 					"kernelspec": {
 						"name": "synapse_pyspark",
 						"display_name": "python"
 					},
 					"language_info": {
 						"name": "python"
-					}
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/1735300c-0c18-453f-b3b7-8b49cbac9c06/resourceGroups/rg-oea-mmarek/providers/Microsoft.Synapse/workspaces/syn-oea-mmarek/bigDataPools/spark3p1sm",
+						"name": "spark3p1sm",
+						"type": "Spark",
+						"endpoint": "https://syn-oea-mmarek.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spark3p1sm",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
-							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
+							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
 							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
@@ -3532,7 +3605,6 @@
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
-						"attachments": null,
 						"outputs": [],
 						"execution_count": null
 					}
@@ -5181,7 +5253,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "d7d41a20-6b17-435f-9871-a709c8ff4403"
+						"spark.autotune.trackingId": "fe6fbae3-68d3-4fb4-ac5c-4bf09a949a61"
 					}
 				},
 				"metadata": {
@@ -5254,9 +5326,9 @@
 							"            for key in m365_data.keys(): \r\n",
 							"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\r\n",
 							"\r\n",
-							"            writer.write(f'newcontoso_sis/{datetime_str}/studentattendance/part1.csv', school_data.pop('_attendance'))\r\n",
-							"            writer.write(f'newcontoso_sis/{datetime_str}/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\r\n",
-							"            writer.write(f'newcontoso_sis/{datetime_str}/students/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
+							"            writer.write(f'studentattendance/part1.csv', school_data.pop('_attendance'))\r\n",
+							"            writer.write(f'studentsectionmark/part1.csv', school_data.pop('_section_marks'))\r\n",
+							"            writer.write(f'studentdemographics/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\r\n",
 							"\r\n",
 							"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\r\n",
 							"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\r\n",
