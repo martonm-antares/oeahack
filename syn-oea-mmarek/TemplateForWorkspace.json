@@ -121,6 +121,51 @@
 								"type": "BigDataPoolReference"
 							}
 						}
+					},
+					{
+						"name": "if createSQLDB",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "ingest to state2np and stage2p",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@pipeline().parameters.createSQLDB",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "create_sql_db",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "create_sql_db",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"storageAccount": {
+												"value": "@pipeline().parameters.storageAccount",
+												"type": "Expression"
+											},
+											"sourceDirectory": {
+												"value": "@pipeline().parameters.sourceDirectory",
+												"type": "Expression"
+											},
+											"stage": "2"
+										}
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -135,6 +180,14 @@
 					"sourceDirectory": {
 						"type": "string",
 						"defaultValue": "generated_data"
+					},
+					"createSQLDB": {
+						"type": "bool",
+						"defaultValue": true
+					},
+					"createLakeDB": {
+						"type": "bool",
+						"defaultValue": true
 					}
 				},
 				"folder": {
@@ -145,7 +198,8 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/notebooks/Antares_OEA')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]",
-				"[concat(variables('workspaceId'), '/notebooks/OEA_connector')]"
+				"[concat(variables('workspaceId'), '/notebooks/OEA_connector')]",
+				"[concat(variables('workspaceId'), '/pipelines/create_sql_db')]"
 			]
 		},
 		{
@@ -1060,7 +1114,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "contoso_sis"
+						"defaultValue": "generated_data"
 					},
 					"stage": {
 						"type": "string",
@@ -3529,7 +3583,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "39c70a27-4b05-4b2a-ba92-2f7b64ad9b96"
+						"spark.autotune.trackingId": "1a811f83-4484-4a06-b786-2412de5cbc6b"
 					}
 				},
 				"metadata": {
@@ -3554,15 +3608,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
