@@ -41,6 +41,58 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('workspaceName'), '/Antares_OEA_Pipeline')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This pipeline generates test data and stores it in stage1np. It then moves the data through stage 2 (p and np) and then stage 3 (transformed)",
+				"activities": [
+					{
+						"name": "Antares_OEA",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "Antares_OEA",
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"numberOfSchools": {
+									"value": "2",
+									"type": "int"
+								}
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "spark3p1sm",
+								"type": "BigDataPoolReference"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "OEA_Framework"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/Antares_OEA')]",
+				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Copy_all_from_Azure_SQL_DB')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -2765,7 +2817,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "1fd8c397-1d86-493b-8732-8fc00d4d07cb"
+						"spark.autotune.trackingId": "b1fbf121-3c56-4128-a213-d275502ca76b"
 					}
 				},
 				"metadata": {
@@ -2790,8 +2842,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -2827,46 +2878,6 @@
 						],
 						"outputs": [],
 						"execution_count": 82
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"%run DataGen_py"
-						],
-						"outputs": [],
-						"execution_count": 63
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"dataGenerator = EdFiDataGenerator()\r\n",
-							"writer = DataLakeWriter(oea.stage1np + '/gen_test_data')\r\n",
-							"dataGenerator.generate_data(2, writer)"
-						],
-						"outputs": [],
-						"execution_count": 64
 					},
 					{
 						"cell_type": "code",
@@ -2921,8 +2932,8 @@
 						},
 						"source": [
 							"dataGen = M365DataGenerator()\r\n",
-							"writer = DataLakeWriter(oea.stage1np + '/newgen_test_data_m365')\r\n",
-							"dataGen.generate_data(2, writer)"
+							"writer = DataLakeWriter(oea.stage1np + '/1newgen_test_data_m365')\r\n",
+							"dataGen.generate_data(numberOfSchools, writer)"
 						],
 						"outputs": [],
 						"execution_count": 84
