@@ -63,10 +63,12 @@
 					},
 					"parameters": {
 						"object_name": {
-							"value": "contoso_sis"
+							"value": "contoso_sis",
+							"type": "string"
 						},
 						"method_name": {
-							"value": "ingest"
+							"value": "ingest",
+							"type": "string"
 						}
 					},
 					"snapshot": true,
