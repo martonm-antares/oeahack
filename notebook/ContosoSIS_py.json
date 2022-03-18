@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fde5d509-ee2c-4597-a7b6-83bc2d597089"
+				"spark.autotune.trackingId": "1a811f83-4484-4a06-b786-2412de5cbc6b"
 			}
 		},
 		"metadata": {
@@ -89,10 +89,10 @@
 					"\n",
 					"    def ingest(self):\n",
 					"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
-					"        oea.ingest_incremental_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
-					"        oea.ingest_incremental_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'SIS ID')\n",
-					"        #oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
-					"        #oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+					"        #oea.ingest_incremental_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+					"        #oea.ingest_incremental_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'SIS ID')\n",
+					"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+					"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 					"\n",
 					"contoso_sis = ContosoSIS()"
 				],
