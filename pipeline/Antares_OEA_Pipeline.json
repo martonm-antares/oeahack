@@ -122,6 +122,44 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "if createLakeDB",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ingest to state2np and stage2p",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@pipeline().parameters.create_lake_db",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "create_lake_db",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "create_lake_db",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"stageNum": "2",
+									"sourceDirectory": "@pipeline().parameters.sourceDirectory"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
