@@ -166,6 +166,47 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "if createLakeDB",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "ingest to state2np and stage2p",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@pipeline().parameters.createLakeDB",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "create_lake_db",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "create_lake_db",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"stageNum": "2",
+											"sourceDirectory": {
+												"value": "@pipeline().parameters.sourceDirectory",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -199,7 +240,8 @@
 				"[concat(variables('workspaceId'), '/notebooks/Antares_OEA')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]",
 				"[concat(variables('workspaceId'), '/notebooks/OEA_connector')]",
-				"[concat(variables('workspaceId'), '/pipelines/create_sql_db')]"
+				"[concat(variables('workspaceId'), '/pipelines/create_sql_db')]",
+				"[concat(variables('workspaceId'), '/pipelines/create_lake_db')]"
 			]
 		},
 		{
