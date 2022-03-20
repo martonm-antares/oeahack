@@ -137,7 +137,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@pipeline().parameters.create_lake_db",
+						"value": "@pipeline().parameters.createLakeDB",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -154,7 +154,10 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"stageNum": "2",
-									"sourceDirectory": "@pipeline().parameters.sourceDirectory"
+									"sourceDirectory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									}
 								}
 							}
 						}
