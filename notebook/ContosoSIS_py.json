@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fd5d845e-e0b3-4af0-8c8c-103aef6f2ee0"
+				"spark.autotune.trackingId": "ed12accc-760c-45b5-95e2-58f6d4c0941d"
 			}
 		},
 		"metadata": {
@@ -54,9 +54,9 @@
 					"class ContosoSIS(BaseOEAModule):\n",
 					"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 					"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
-					"        self.schemas['studentattendance'] = [['id', 'integer', 'no-op'],\n",
+					"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
-					"                                            ['school_year', 'integer', 'partition-by'],\n",
+					"                                            ['school_year', 'string', 'partition-by'],\n",
 					"                                            ['school_id', 'string', 'no-op'],\n",
 					"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
 					"                                            ['all_day', 'string', 'no-op'],\n",
@@ -68,10 +68,10 @@
 					"                                            ['attendance_type', 'string', 'no-op'],\n",
 					"                                            ['attendance_sequence', 'short', 'no-op']]\n",
 					"\n",
-					"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
+					"        self.schemas['studentsectionmark'] = [['id', 'string', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['section_id', 'string', 'no-op'],\n",
-					"                                            ['school_year', 'integer', 'partition-by'],\n",
+					"                                            ['school_year', 'string', 'partition-by'],\n",
 					"                                            ['term_id', 'string', 'no-op'],\n",
 					"                                            ['numeric_grade_earned', 'short', 'no-op'],\n",
 					"                                            ['alpha_grade_earned', 'string', 'no-op'],\n",
