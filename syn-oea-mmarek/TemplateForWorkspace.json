@@ -66,7 +66,7 @@
 							},
 							"parameters": {
 								"numberOfSchools": {
-									"value": "1",
+									"value": "5",
 									"type": "int"
 								},
 								"folderName": {
@@ -3625,7 +3625,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "1a811f83-4484-4a06-b786-2412de5cbc6b"
+						"spark.autotune.trackingId": "e2d43a28-44df-4135-a8b5-81d02bb0e89b"
 					}
 				},
 				"metadata": {
@@ -3688,11 +3688,26 @@
 							"                                            ['grad_credit_type', 'string', 'no-op']]\n",
 							"\n",
 							"        self.schemas['studentdemographics'] = [['SIS ID', 'string', 'hash'],\n",
+							"                                            ['School SIS ID', 'string', 'hash'],\n",
+							"                                            ['Username', 'string', 'no-op'],\n",
+							"                                            ['Password', 'string', 'hash'],\n",
+							"                                            ['First Name', 'string', 'no-op'],\n",
+							"                                            ['Last Name', 'string', 'no-op'],\n",
+							"                                            ['Middle Name', 'string', 'no-op'],\n",
+							"                                            ['Email', 'string', 'no-op'],\n",
+							"                                            ['Student Number', 'string', 'hash'],\n",
+							"                                            ['Grade', 'integer', 'no-op'],\n",
+							"                                            ['State ID', 'integer', 'no-op'],\n",
+							"                                            ['Status', 'string', 'no-op'],\n",
+							"                                            ['Birthdate', 'date', 'no-op'],\n",
+							"                                            ['Graduation Year', 'integer', 'no-op'],\n",
+							"                                            ['Gender', 'string', 'no-op'],\n",
 							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
 							"                                            ['PrimaryLanguage', 'string', 'no-op'],\n",
 							"                                            ['ELLStatus', 'string', 'no-op'],\n",
 							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
-							"                                            ['LowIncome', 'boolean', 'no-op']]                                            \n",
+							"                                            ['LowIncome', 'boolean', 'no-op'],\n",
+							"                                            ['CumulativeGPA', 'double', 'no-op']]                                            \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
@@ -5351,7 +5366,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fb35de1d-5e56-456e-9099-48435cccadb5"
+						"spark.autotune.trackingId": "5a40f44d-5bbd-4fbb-be69-3b3c48eac76f"
 					}
 				},
 				"metadata": {
