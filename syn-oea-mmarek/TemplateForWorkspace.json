@@ -3905,10 +3905,6 @@
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "spark3p1sm",
-					"type": "BigDataPoolReference"
-				},
 				"sessionProperties": {
 					"driverMemory": "28g",
 					"driverCores": 4,
@@ -3919,7 +3915,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "1a1064ef-7348-4295-9de3-f8c36a6b905a"
+						"spark.autotune.trackingId": "8e7a0f11-d1db-4df1-80c6-22137c3b88e2"
 					}
 				},
 				"metadata": {
@@ -3931,21 +3927,6 @@
 					},
 					"language_info": {
 						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/1735300c-0c18-453f-b3b7-8b49cbac9c06/resourceGroups/rg-oea-mmarek/providers/Microsoft.Synapse/workspaces/syn-oea-mmarek/bigDataPools/spark3p1sm",
-						"name": "spark3p1sm",
-						"type": "Spark",
-						"endpoint": "https://syn-oea-mmarek.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spark3p1sm",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.1",
-						"nodeCount": 3,
-						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -3959,7 +3940,7 @@
 							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
 							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
-							"                                            ['school_year', 'string', 'partition-by'],\n",
+							"                                            ['school_year', 'integer', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
 							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
@@ -3984,31 +3965,14 @@
 							"                                            ['grad_credit_type', 'string', 'no-op']]\n",
 							"\n",
 							"        self.schemas['studentdemographics'] = [['SIS ID', 'string', 'hash'],\n",
-							"                                            ['School SIS ID', 'string', 'hash'],\n",
-							"                                            ['Username', 'string', 'no-op'],\n",
-							"                                            ['Password', 'string', 'hash'],\n",
-							"                                            ['First Name', 'string', 'no-op'],\n",
-							"                                            ['Last Name', 'string', 'no-op'],\n",
-							"                                            ['Middle Name', 'string', 'no-op'],\n",
-							"                                            ['Email', 'string', 'no-op'],\n",
-							"                                            ['Student Number', 'string', 'hash'],\n",
-							"                                            ['Grade', 'integer', 'no-op'],\n",
-							"                                            ['State ID', 'integer', 'no-op'],\n",
-							"                                            ['Status', 'string', 'no-op'],\n",
-							"                                            ['Birthdate', 'date', 'no-op'],\n",
-							"                                            ['Graduation Year', 'integer', 'no-op'],\n",
-							"                                            ['Gender', 'string', 'no-op'],\n",
 							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
 							"                                            ['PrimaryLanguage', 'string', 'no-op'],\n",
 							"                                            ['ELLStatus', 'string', 'no-op'],\n",
 							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
-							"                                            ['LowIncome', 'boolean', 'no-op'],\n",
-							"                                            ['CumulativeGPA', 'double', 'no-op']]                                            \n",
+							"                                            ['LowIncome', 'boolean', 'no-op']]                                            \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
-							"        #oea.ingest_incremental_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
-							"        #oea.ingest_incremental_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'SIS ID')\n",
 							"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 							"\n",
@@ -8704,6 +8668,127 @@
 							"##########################\r\n",
 							"#generate_data()\r\n",
 							""
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/old_ContosoSIS_py')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spark3p1sm",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "27461b68-19ab-4995-954f-6e4ccf0de1aa"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/1735300c-0c18-453f-b3b7-8b49cbac9c06/resourceGroups/rg-oea-mmarek/providers/Microsoft.Synapse/workspaces/syn-oea-mmarek/bigDataPools/spark3p1sm",
+						"name": "spark3p1sm",
+						"type": "Spark",
+						"endpoint": "https://syn-oea-mmarek.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spark3p1sm",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							"class ContosoSIS(BaseOEAModule):\n",
+							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
+							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
+							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
+							"                                            ['student_id', 'string', 'hash'],\n",
+							"                                            ['school_year', 'string', 'partition-by'],\n",
+							"                                            ['school_id', 'string', 'no-op'],\n",
+							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
+							"                                            ['all_day', 'string', 'no-op'],\n",
+							"                                            ['Period', 'short', 'no-op'],\n",
+							"                                            ['section_id', 'string', 'no-op'],\n",
+							"                                            ['AttendanceCode', 'string', 'no-op'],\n",
+							"                                            ['PresenceFlag', 'boolean', 'no-op'],\n",
+							"                                            ['attendance_status', 'string', 'no-op'],\n",
+							"                                            ['attendance_type', 'string', 'no-op'],\n",
+							"                                            ['attendance_sequence', 'short', 'no-op']]\n",
+							"\n",
+							"        self.schemas['studentsectionmark'] = [['id', 'string', 'no-op'],\n",
+							"                                            ['student_id', 'string', 'hash'],\n",
+							"                                            ['section_id', 'string', 'no-op'],\n",
+							"                                            ['school_year', 'string', 'partition-by'],\n",
+							"                                            ['term_id', 'string', 'no-op'],\n",
+							"                                            ['numeric_grade_earned', 'short', 'no-op'],\n",
+							"                                            ['alpha_grade_earned', 'string', 'no-op'],\n",
+							"                                            ['is_final_grade', 'string', 'no-op'],\n",
+							"                                            ['credits_attempted', 'short', 'no-op'],\n",
+							"                                            ['credits_earned', 'short', 'no-op'],\n",
+							"                                            ['grad_credit_type', 'string', 'no-op']]\n",
+							"\n",
+							"        self.schemas['studentdemographics'] = [['SIS ID', 'string', 'hash'],\n",
+							"                                            ['School SIS ID', 'string', 'hash'],\n",
+							"                                            ['Username', 'string', 'no-op'],\n",
+							"                                            ['Password', 'string', 'hash'],\n",
+							"                                            ['First Name', 'string', 'no-op'],\n",
+							"                                            ['Last Name', 'string', 'no-op'],\n",
+							"                                            ['Middle Name', 'string', 'no-op'],\n",
+							"                                            ['Email', 'string', 'no-op'],\n",
+							"                                            ['Student Number', 'string', 'hash'],\n",
+							"                                            ['Grade', 'integer', 'no-op'],\n",
+							"                                            ['State ID', 'integer', 'no-op'],\n",
+							"                                            ['Status', 'string', 'no-op'],\n",
+							"                                            ['Birthdate', 'date', 'no-op'],\n",
+							"                                            ['Graduation Year', 'integer', 'no-op'],\n",
+							"                                            ['Gender', 'string', 'no-op'],\n",
+							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
+							"                                            ['PrimaryLanguage', 'string', 'no-op'],\n",
+							"                                            ['ELLStatus', 'string', 'no-op'],\n",
+							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
+							"                                            ['LowIncome', 'boolean', 'no-op'],\n",
+							"                                            ['CumulativeGPA', 'double', 'no-op']]                                            \n",
+							"\n",
+							"    def ingest(self):\n",
+							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
+							"        #oea.ingest_incremental_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+							"        #oea.ingest_incremental_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'SIS ID')\n",
+							"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
+							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+							"\n",
+							"contoso_sis = ContosoSIS()"
 						],
 						"outputs": [],
 						"execution_count": null
