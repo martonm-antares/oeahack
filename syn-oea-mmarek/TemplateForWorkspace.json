@@ -2084,6 +2084,26 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [id]\n,[student_id_pseudonym]\n,[school_year]\n,[school_id]\n,[attendance_date]\n,[all_day]\n,[attendance_sequence]\n,[Period]\n,[section_id]\n,[AttendanceCode]\n,[PresenceFlag]\n,[attendance_status]\n,[attendance_type]\n FROM [dbo].[studentattendance_pseudo]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "sqls2_generated_data",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/firstTenStudents')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
@@ -2969,7 +2989,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "c335625f-c63f-4271-9177-6eeac28ecaad"
+						"spark.autotune.trackingId": "68071e44-f536-4241-87f1-d10723090d11"
 					}
 				},
 				"metadata": {
@@ -3064,7 +3084,8 @@
 							}
 						},
 						"source": [
-							"%run M365DataGenerator"
+							"%run M365DataGenerator\r\n",
+							"#commit test"
 						],
 						"outputs": [],
 						"execution_count": 83
@@ -3625,7 +3646,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e2d43a28-44df-4135-a8b5-81d02bb0e89b"
+						"spark.autotune.trackingId": "30bbad8d-2d30-48f5-ac10-62ff7113cde7"
 					}
 				},
 				"metadata": {
@@ -3650,18 +3671,20 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
-							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
+							"        self.schemas['studentattendance'] = [['id', 'integer', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['school_year', 'integer', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
@@ -3675,7 +3698,7 @@
 							"                                            ['attendance_type', 'string', 'no-op'],\n",
 							"                                            ['attendance_sequence', 'short', 'no-op']]\n",
 							"\n",
-							"        self.schemas['studentsectionmark'] = [['id', 'string', 'no-op'],\n",
+							"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
 							"                                            ['school_year', 'string', 'partition-by'],\n",
@@ -5366,7 +5389,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "5697cab1-cea1-4532-8665-c0898645096a"
+						"spark.autotune.trackingId": "c832bde2-7415-4d2e-8b50-49a076f69b3f"
 					}
 				},
 				"metadata": {
@@ -5384,7 +5407,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import csv\r\n",
 							"import os\r\n",
