@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "bef093dd-93a3-4b85-9528-e11ed3a4444a"
+				"spark.autotune.trackingId": "fd5d845e-e0b3-4af0-8c8c-103aef6f2ee0"
 			}
 		},
 		"metadata": {
@@ -71,7 +71,7 @@
 					"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['section_id', 'string', 'no-op'],\n",
-					"                                            ['school_year', 'string', 'partition-by'],\n",
+					"                                            ['school_year', 'integer', 'partition-by'],\n",
 					"                                            ['term_id', 'string', 'no-op'],\n",
 					"                                            ['numeric_grade_earned', 'short', 'no-op'],\n",
 					"                                            ['alpha_grade_earned', 'string', 'no-op'],\n",
