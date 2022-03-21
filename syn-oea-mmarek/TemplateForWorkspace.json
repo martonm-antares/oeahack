@@ -3808,7 +3808,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "bef093dd-93a3-4b85-9528-e11ed3a4444a"
+						"spark.autotune.trackingId": "89a383f9-b7be-4a90-848c-4487df84bc7b"
 					}
 				},
 				"metadata": {
@@ -3833,13 +3833,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -3861,7 +3863,7 @@
 							"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
-							"                                            ['school_year', 'string', 'partition-by'],\n",
+							"                                            ['school_year', 'integer', 'partition-by'],\n",
 							"                                            ['term_id', 'string', 'no-op'],\n",
 							"                                            ['numeric_grade_earned', 'short', 'no-op'],\n",
 							"                                            ['alpha_grade_earned', 'string', 'no-op'],\n",
