@@ -22,7 +22,7 @@
 					},
 					"parameters": {
 						"numberOfSchools": {
-							"value": "5",
+							"value": "2",
 							"type": "int"
 						},
 						"folderName": {
