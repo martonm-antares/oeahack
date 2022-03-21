@@ -1,0 +1,150 @@
+{
+	"name": "Antares_OEA_Pipeline_copy1",
+	"properties": {
+		"description": "This pipeline generates test data and stores it in stage1np. It then moves the data through stage 2 (p and np) and then stage 3 (transformed)",
+		"activities": [
+			{
+				"name": "ingest to state2np and stage2p",
+				"type": "SynapseNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "OEA_connector",
+						"type": "NotebookReference"
+					},
+					"parameters": {
+						"object_name": {
+							"value": "contoso_sis",
+							"type": "string"
+						},
+						"method_name": {
+							"value": "ingest",
+							"type": "string"
+						}
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "spark3p1sm",
+						"type": "BigDataPoolReference"
+					}
+				}
+			},
+			{
+				"name": "if createSQLDB",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ingest to state2np and stage2p",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@pipeline().parameters.createSQLDB",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "create_sql_db",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "create_sql_db",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"storageAccount": {
+										"value": "@pipeline().parameters.storageAccount",
+										"type": "Expression"
+									},
+									"sourceDirectory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									},
+									"stage": "2"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "if createLakeDB",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ingest to state2np and stage2p",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@pipeline().parameters.createLakeDB",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "create_lake_db",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "create_lake_db",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"stageNum": "2",
+									"sourceDirectory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"storageAccount": {
+				"type": "string",
+				"defaultValue": "stoeammarek"
+			},
+			"sourceDirectory": {
+				"type": "string",
+				"defaultValue": "generated_data"
+			},
+			"createSQLDB": {
+				"type": "bool",
+				"defaultValue": true
+			},
+			"createLakeDB": {
+				"type": "bool",
+				"defaultValue": true
+			}
+		},
+		"folder": {
+			"name": "OEA_Framework"
+		},
+		"annotations": []
+	}
+}
