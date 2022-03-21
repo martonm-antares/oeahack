@@ -856,7 +856,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "contoso_sis"
+						"defaultValue": "generated_data"
 					}
 				},
 				"folder": {
