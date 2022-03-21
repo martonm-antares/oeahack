@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "68071e44-f536-4241-87f1-d10723090d11"
+				"spark.autotune.trackingId": "e6ad6133-8fb3-43b6-b750-d9d04f9fd77f"
 			}
 		},
 		"metadata": {
@@ -112,8 +112,7 @@
 					}
 				},
 				"source": [
-					"%run M365DataGenerator\r\n",
-					"#commit test"
+					"%run M365DataGenerator"
 				],
 				"execution_count": 83
 			},
