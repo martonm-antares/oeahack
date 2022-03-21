@@ -3151,7 +3151,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0e4179ee-3722-45dc-9e13-6240dbf3681b"
+						"spark.autotune.trackingId": "e6ad6133-8fb3-43b6-b750-d9d04f9fd77f"
 					}
 				},
 				"metadata": {
@@ -3176,8 +3176,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -3920,7 +3919,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fd5d845e-e0b3-4af0-8c8c-103aef6f2ee0"
+						"spark.autotune.trackingId": "1a1064ef-7348-4295-9de3-f8c36a6b905a"
 					}
 				},
 				"metadata": {
@@ -3945,20 +3944,22 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
-							"        self.schemas['studentattendance'] = [['id', 'integer', 'no-op'],\n",
+							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
-							"                                            ['school_year', 'integer', 'partition-by'],\n",
+							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
 							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
@@ -3970,10 +3971,10 @@
 							"                                            ['attendance_type', 'string', 'no-op'],\n",
 							"                                            ['attendance_sequence', 'short', 'no-op']]\n",
 							"\n",
-							"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
+							"        self.schemas['studentsectionmark'] = [['id', 'string', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
-							"                                            ['school_year', 'integer', 'partition-by'],\n",
+							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['term_id', 'string', 'no-op'],\n",
 							"                                            ['numeric_grade_earned', 'short', 'no-op'],\n",
 							"                                            ['alpha_grade_earned', 'string', 'no-op'],\n",
