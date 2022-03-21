@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [id]\n,[student_id_pseudonym]\n,[school_year]\n,[school_id]\n,[attendance_date]\n,[all_day]\n,[attendance_sequence]\n,[Period]\n,[section_id]\n,[AttendanceCode]\n,[PresenceFlag]\n,[attendance_status]\n,[attendance_type]\n FROM [dbo].[studentattendance_pseudo]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqls2_generated_data",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

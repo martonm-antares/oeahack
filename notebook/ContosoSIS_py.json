@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e2d43a28-44df-4135-a8b5-81d02bb0e89b"
+				"spark.autotune.trackingId": "bef093dd-93a3-4b85-9528-e11ed3a4444a"
 			}
 		},
 		"metadata": {
@@ -54,7 +54,7 @@
 					"class ContosoSIS(BaseOEAModule):\n",
 					"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 					"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
-					"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
+					"        self.schemas['studentattendance'] = [['id', 'integer', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['school_year', 'integer', 'partition-by'],\n",
 					"                                            ['school_id', 'string', 'no-op'],\n",
@@ -68,7 +68,7 @@
 					"                                            ['attendance_type', 'string', 'no-op'],\n",
 					"                                            ['attendance_sequence', 'short', 'no-op']]\n",
 					"\n",
-					"        self.schemas['studentsectionmark'] = [['id', 'string', 'no-op'],\n",
+					"        self.schemas['studentsectionmark'] = [['id', 'integer', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['section_id', 'string', 'no-op'],\n",
 					"                                            ['school_year', 'string', 'partition-by'],\n",
