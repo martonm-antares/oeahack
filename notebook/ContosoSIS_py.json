@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "5df9d249-5d88-41eb-ae54-1934c7541998"
+				"spark.autotune.trackingId": "1a770e79-2901-441c-b29b-e5a09c2d3209"
 			}
 		},
 		"metadata": {
@@ -37,7 +37,7 @@
 					"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
 					"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",
-					"                                            ['school_year', 'integer', 'partition-by'],\n",
+					"                                            ['school_year', 'string', 'partition-by'],\n",
 					"                                            ['school_id', 'string', 'no-op'],\n",
 					"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
 					"                                            ['all_day', 'string', 'no-op'],\n",
