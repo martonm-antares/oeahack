@@ -3147,7 +3147,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e7c301e0-6b05-46b4-9f51-9ae899485728"
+						"spark.autotune.trackingId": "f2ddb5b1-0ecb-4cfe-a847-ce4a40b4b0d8"
 					}
 				},
 				"metadata": {
@@ -3172,8 +3172,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -6617,7 +6616,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "863e1b5c-51fe-4154-8ed8-2578d43e4018"
+						"spark.autotune.trackingId": "36771aba-b131-4cdd-a5e9-e9668ff1cea2"
 					}
 				},
 				"metadata": {
@@ -6642,13 +6641,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"import csv\n",
 							"import os\n",
@@ -6666,7 +6667,7 @@
 							"\n",
 							"class M365DataGenerator:\n",
 							"    def __init__(self, activity_min_per_person=5, activity_max_per_person=20, students_per_school=100, classes_in_student_schedule=6, students_per_section=25, student_teacher_ratio=9, include_optional_fields=False,\n",
-							"                 fall_semester_start_date='2021-08-15', fall_semester_end_date='2021-12-15', spring_semester_start_date='2022-01-10', spring_semester_end_date='2022-05-10'):\n",
+							"                 fall_semester_start_date='2021-02-15', fall_semester_end_date='2021-06-15', spring_semester_start_date='2021-07-10', spring_semester_end_date='2021-12-10'):\n",
 							"        # Set a seed value in Faker so it generates the same values every time it's run\n",
 							"        self.faker = Faker('en_US')\n",
 							"        Faker.seed(1)\n",
@@ -6819,8 +6820,8 @@
 							"        terms.append({\n",
 							"            'Term SIS ID': 'term' + str(self.term_id),\n",
 							"            'Term Name': 'Fall Semester',\n",
-							"            'Term StartDate': '9/1/2019',\n",
-							"            'Term EndDate': '12/22/2019',\n",
+							"            'Term StartDate': '2/15/2021',\n",
+							"            'Term EndDate': '6/15/2021',\n",
 							"            '_sections': [],\n",
 							"            # this is an array of arrays representing the sections and the spots (available seats) within each section\n",
 							"            '_section_spots': [],\n",
@@ -6830,8 +6831,8 @@
 							"        terms.append({\n",
 							"            'Term SIS ID': 'term' + str(self.term_id),\n",
 							"            'Term Name': 'Spring Semester',\n",
-							"            'Term StartDate': '1/21/2020',\n",
-							"            'Term EndDate': '5/30/2020',\n",
+							"            'Term StartDate': '7/10/2021',\n",
+							"            'Term EndDate': '12/10/2021',\n",
 							"            '_sections': [],\n",
 							"            '_section_spots': [],\n",
 							"            '_calendar_id': calendar_id\n",
