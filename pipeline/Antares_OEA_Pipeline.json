@@ -172,7 +172,7 @@
 			},
 			"sourceDirectory": {
 				"type": "string",
-				"defaultValue": "generated_data"
+				"defaultValue": "contoso_sis"
 			},
 			"createSQLDB": {
 				"type": "bool",
