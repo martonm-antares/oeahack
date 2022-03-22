@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ff3ccb72-37a8-4d0b-8566-bab2f0440d41"
+				"spark.autotune.trackingId": "5df9d249-5d88-41eb-ae54-1934c7541998"
 			}
 		},
 		"metadata": {
@@ -33,7 +33,7 @@
 				"cell_type": "code",
 				"source": [
 					"class ContosoSIS(BaseOEAModule):\n",
-					"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
+					"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
 					"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
 					"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 					"                                            ['student_id', 'string', 'hash'],\n",

@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e6ad6133-8fb3-43b6-b750-d9d04f9fd77f"
+				"spark.autotune.trackingId": "4d8b15c7-1ddd-452d-b3c5-b2da70faa8c7"
 			}
 		},
 		"metadata": {
@@ -94,24 +94,6 @@
 					}
 				},
 				"source": [
-					"%run DataGenUtil"
-				],
-				"execution_count": 76
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
 					"%run M365DataGenerator"
 				],
 				"execution_count": 83
@@ -130,9 +112,16 @@
 					}
 				},
 				"source": [
-					"dataGen = M365DataGenerator()\r\n",
-					"writer = DataLakeWriter(oea.stage1np + folderName)\r\n",
-					"dataGen.generate_data(numberOfSchools, writer)"
+					"#dataGen = M365DataGenerator()\r\n",
+					"#writer = DataLakeWriter(oea.stage1np + folderName)\r\n",
+					"#dataGen.generate_data(numberOfSchools, writer)\r\n",
+					"\r\n",
+					"oea = OEA()\r\n",
+					"oea.rm_if_exists(oea.stage1np + '/generated/m365_test')\r\n",
+					"oea.rm_if_exists(oea.stage1np + '/generated/contoso_sis_test')\r\n",
+					"data_generator = M365DataGenerator_py(activity_max_per_person=15)\r\n",
+					"data_lake_writer = DataLakeWriter(oea.stage1np)\r\n",
+					"data_generator.generate_data(num_of_schools=2, writer=data_lake_writer)"
 				],
 				"execution_count": 84
 			}
