@@ -1018,7 +1018,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "generated_data"
+						"defaultValue": "contoso_sis"
 					}
 				},
 				"folder": {
@@ -1318,7 +1318,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "generated_data"
+						"defaultValue": "contoso_sis"
 					},
 					"stage": {
 						"type": "string",
@@ -6614,7 +6614,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "2f0a7efa-da35-45de-b333-020375848944"
+						"spark.autotune.trackingId": "e72e1ec7-ebf5-4072-afb7-1963723f29ae"
 					}
 				},
 				"metadata": {
@@ -6632,7 +6632,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import csv\n",
 							"import os\n",
