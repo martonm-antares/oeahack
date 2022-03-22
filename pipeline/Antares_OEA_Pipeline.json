@@ -22,12 +22,8 @@
 					},
 					"parameters": {
 						"numberOfSchools": {
-							"value": "2",
+							"value": "1",
 							"type": "int"
-						},
-						"folderName": {
-							"value": "/generated_data",
-							"type": "string"
 						}
 					},
 					"snapshot": true,
