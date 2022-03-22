@@ -3903,7 +3903,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "5df9d249-5d88-41eb-ae54-1934c7541998"
+						"spark.autotune.trackingId": "07d6510f-685d-4826-87a8-3721e37ca74d"
 					}
 				},
 				"metadata": {
@@ -3921,6 +3921,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
@@ -6614,7 +6615,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e72e1ec7-ebf5-4072-afb7-1963723f29ae"
+						"spark.autotune.trackingId": "040c268e-fe7a-407c-ada4-306fecd00a97"
 					}
 				},
 				"metadata": {
@@ -6689,7 +6690,7 @@
 							"\n",
 							"            writer.write(f'contoso_sis/studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\n",
 							"            writer.write(f'contoso_sis/studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\n",
-							"            writer.write(f'contoso_sis/studentsdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
+							"            writer.write(f'contoso_sis/studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
 							"\n",
 							"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\n",
 							"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\n",
