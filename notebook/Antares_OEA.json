@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "8d2fd959-ee74-4231-a847-5328409002bb"
+				"spark.autotune.trackingId": "f2ddb5b1-0ecb-4cfe-a847-ce4a40b4b0d8"
 			}
 		},
 		"metadata": {
@@ -94,7 +94,7 @@
 					}
 				},
 				"source": [
-					"%run M365DataGenerator_py"
+					"%run M365DataGeneratorV2_py"
 				],
 				"execution_count": 83
 			},
@@ -114,6 +114,8 @@
 				"source": [
 					"dataGen = M365DataGenerator()\r\n",
 					"writer = DataLakeWriter(oea.stage1np)\r\n",
+					"\r\n",
+					"# the data generator currently does not work with more than 1 school at a time\r\n",
 					"dataGen.generate_data(numberOfSchools, writer)\r\n",
 					"\r\n",
 					"#oea = OEA()\r\n",
