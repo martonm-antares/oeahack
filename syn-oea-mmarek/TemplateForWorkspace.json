@@ -3151,7 +3151,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "8fff0024-538f-4d01-bb7b-290c147c8744"
+						"spark.autotune.trackingId": "c50360ab-cee9-4ee2-b673-3d534c7ea5cd"
 					}
 				},
 				"metadata": {
@@ -3228,7 +3228,7 @@
 							}
 						},
 						"source": [
-							"%run M365DataGenerator"
+							"%run M365DataGenerator_py"
 						],
 						"outputs": [],
 						"execution_count": 83
@@ -3254,7 +3254,7 @@
 							"oea = OEA()\r\n",
 							"oea.rm_if_exists(oea.stage1np + '/generated/m365_test')\r\n",
 							"oea.rm_if_exists(oea.stage1np + '/generated/contoso_sis_test')\r\n",
-							"data_generator = M365DataGenerator_py(activity_max_per_person=15)\r\n",
+							"data_generator = M365DataGenerator(activity_max_per_person=15)\r\n",
 							"data_lake_writer = DataLakeWriter(oea.stage1np)\r\n",
 							"data_generator.generate_data(num_of_schools=2, writer=data_lake_writer)"
 						],
