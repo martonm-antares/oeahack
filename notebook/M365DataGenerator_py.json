@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "45540164-c8d2-4d8a-a3f5-5416786aec9a"
+				"spark.autotune.trackingId": "58ff9a90-66d4-4fc1-8a36-7541be2b2102"
 			}
 		},
 		"metadata": {
@@ -88,7 +88,7 @@
 					"\n",
 					"            writer.write(f'contoso_sis/{datetime_str}/studentattendance/part1.csv', school_data.pop('_attendance'))\n",
 					"            writer.write(f'contoso_sis/{datetime_str}/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\n",
-					"            writer.write(f'contoso_sis/{datetime_str}/students/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
+					"            writer.write(f'contoso_sis/{datetime_str}/studentsdemographics/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
 					"\n",
 					"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\n",
 					"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\n",
