@@ -3147,7 +3147,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f2ddb5b1-0ecb-4cfe-a847-ce4a40b4b0d8"
+						"spark.autotune.trackingId": "97546f3d-cd98-4793-863b-52248bcfbbf4"
 					}
 				},
 				"metadata": {
@@ -3172,7 +3172,8 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -6616,7 +6617,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "36771aba-b131-4cdd-a5e9-e9668ff1cea2"
+						"spark.autotune.trackingId": "4b169a33-51e0-405a-ae4a-0052fedbe626"
 					}
 				},
 				"metadata": {
@@ -6641,15 +6642,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"import csv\n",
 							"import os\n",
@@ -6997,6 +6996,7 @@
 							"                presence_flag = 0\n",
 							"                attendance_status = 'Absent'\n",
 							"            attendance += f\"att_{student_id},{student_id},{school_year},{school_id},{single_date.strftime('%d/%m/%Y')},No,1,{section_id},{attendance_code},{presence_flag},{attendance_status},ClassSectionAttendance,0\\n\"\n",
+							"            print(single_date.strftime('%d/%m/%Y'))\n",
 							"        return attendance\n",
 							"\n",
 							"\n",
