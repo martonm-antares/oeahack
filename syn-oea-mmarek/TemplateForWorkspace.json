@@ -66,12 +66,8 @@
 							},
 							"parameters": {
 								"numberOfSchools": {
-									"value": "2",
+									"value": "1",
 									"type": "int"
-								},
-								"folderName": {
-									"value": "/generated_data",
-									"type": "string"
 								}
 							},
 							"snapshot": true,
@@ -3903,7 +3899,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "dc16bbbe-0db7-4fb9-b860-c88ed231bf92"
+						"spark.autotune.trackingId": "1a770e79-2901-441c-b29b-e5a09c2d3209"
 					}
 				},
 				"metadata": {
@@ -3921,7 +3917,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
@@ -6605,6 +6600,10 @@
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spark3p1sm",
+					"type": "BigDataPoolReference"
+				},
 				"sessionProperties": {
 					"driverMemory": "28g",
 					"driverCores": 4,
@@ -6615,7 +6614,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "040c268e-fe7a-407c-ada4-306fecd00a97"
+						"spark.autotune.trackingId": "cbf4e3c6-d3b4-47e0-809a-73134cdbec46"
 					}
 				},
 				"metadata": {
@@ -6627,6 +6626,20 @@
 					},
 					"language_info": {
 						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/1735300c-0c18-453f-b3b7-8b49cbac9c06/resourceGroups/rg-oea-mmarek/providers/Microsoft.Synapse/workspaces/syn-oea-mmarek/bigDataPools/spark3p1sm",
+						"name": "spark3p1sm",
+						"type": "Spark",
+						"endpoint": "https://syn-oea-mmarek.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spark3p1sm",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -6964,7 +6977,7 @@
 							"                        grade = self.get_random_grade()\n",
 							"                        credits_earned = 5\n",
 							"                        if grade[1] == 'F': credits_earned = 0\n",
-							"                        school['_section_marks'] += f\"m{mark_id},{student['SIS ID']},{spot_taken},,{term['Term SIS ID']},{grade[0]},{grade[1]},No,5,{credits_earned},\\n\"\n",
+							"                        school['_section_marks'] += f\"m{mark_id},{student['SIS ID']},{spot_taken},2021,{term['Term SIS ID']},{grade[0]},{grade[1]},No,5,{credits_earned},\\n\"\n",
 							"                        mark_id += 1\n",
 							"                    if (num_enrollments >= self.classes_in_student_schedule): break        \n",
 							"\n",
