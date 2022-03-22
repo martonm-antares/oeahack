@@ -3147,7 +3147,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "97546f3d-cd98-4793-863b-52248bcfbbf4"
+						"spark.autotune.trackingId": "f2ddb5b1-0ecb-4cfe-a847-ce4a40b4b0d8"
 					}
 				},
 				"metadata": {
@@ -3172,8 +3172,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -3902,7 +3901,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "1a770e79-2901-441c-b29b-e5a09c2d3209"
+						"spark.autotune.trackingId": "c29098ce-be16-4e7f-9180-654dfad217b4"
 					}
 				},
 				"metadata": {
@@ -3920,6 +3919,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
@@ -3928,7 +3928,7 @@
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
-							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
+							"                                            ['attendance_date', 'date', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
 							"                                            ['Period', 'short', 'no-op'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
@@ -6617,7 +6617,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "4b169a33-51e0-405a-ae4a-0052fedbe626"
+						"spark.autotune.trackingId": "2f3db6fa-81a9-4bcc-955b-175bdf700066"
 					}
 				},
 				"metadata": {
@@ -6996,7 +6996,6 @@
 							"                presence_flag = 0\n",
 							"                attendance_status = 'Absent'\n",
 							"            attendance += f\"att_{student_id},{student_id},{school_year},{school_id},{single_date.strftime('%d/%m/%Y')},No,1,{section_id},{attendance_code},{presence_flag},{attendance_status},ClassSectionAttendance,0\\n\"\n",
-							"            print(single_date.strftime('%d/%m/%Y'))\n",
 							"        return attendance\n",
 							"\n",
 							"\n",
