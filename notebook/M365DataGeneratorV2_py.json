@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "f4219066-ef6c-4871-9cdb-33ece747180f"
+				"spark.autotune.trackingId": "4b169a33-51e0-405a-ae4a-0052fedbe626"
 			}
 		},
 		"metadata": {
@@ -397,6 +397,7 @@
 					"                presence_flag = 0\n",
 					"                attendance_status = 'Absent'\n",
 					"            attendance += f\"att_{student_id},{student_id},{school_year},{school_id},{single_date.strftime('%d/%m/%Y')},No,1,{section_id},{attendance_code},{presence_flag},{attendance_status},ClassSectionAttendance,0\\n\"\n",
+					"            print(single_date.strftime('%d/%m/%Y'))\n",
 					"        return attendance\n",
 					"\n",
 					"\n",
