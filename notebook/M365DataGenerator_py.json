@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "58ff9a90-66d4-4fc1-8a36-7541be2b2102"
+				"spark.autotune.trackingId": "e304c304-071f-49f4-a96e-e59580d5535d"
 			}
 		},
 		"metadata": {
@@ -86,9 +86,9 @@
 					"            for key in m365_data.keys(): \n",
 					"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\n",
 					"\n",
-					"            writer.write(f'contoso_sis/{datetime_str}/studentattendance/part1.csv', school_data.pop('_attendance'))\n",
-					"            writer.write(f'contoso_sis/{datetime_str}/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\n",
-					"            writer.write(f'contoso_sis/{datetime_str}/studentsdemographics/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
+					"            writer.write(f'contoso_sis/studentattendance/part1.csv', school_data.pop('_attendance'))\n",
+					"            writer.write(f'contoso_sis/studentsectionmark/part1.csv', school_data.pop('_section_marks'))\n",
+					"            writer.write(f'contoso_sis/studentsdemographics/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
 					"\n",
 					"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\n",
 					"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\n",
