@@ -3901,7 +3901,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "aeefee22-990c-4820-ac4e-f52e19588618"
+						"spark.autotune.trackingId": "4c9b5fbe-54a9-43d2-a94d-4e62298d790c"
 					}
 				},
 				"metadata": {
@@ -3919,7 +3919,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
@@ -6617,7 +6616,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "2f3db6fa-81a9-4bcc-955b-175bdf700066"
+						"spark.autotune.trackingId": "a2f38084-bf9c-4eff-89da-ab07a01fcba3"
 					}
 				},
 				"metadata": {
@@ -6642,13 +6641,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"import csv\n",
 							"import os\n",
@@ -6692,10 +6693,12 @@
 							"        self.school_id = 1\n",
 							"        self.term_id = 1\n",
 							"        self.domain = '@Classrmtest86.org'\n",
+							"        self.att_id = 1\n",
 							"\n",
 							"    def generate_data(self, num_of_schools, writer):\n",
 							"        schools = ''\n",
 							"        datetime_str = datetime.now().strftime('%Y-%m-%dT%H%M_%S')\n",
+							"        self.att_id = 1\n",
 							"\n",
 							"        for n in range(num_of_schools):\n",
 							"            school_data = self.create_school(n)\n",
@@ -6995,7 +6998,8 @@
 							"            else: \n",
 							"                presence_flag = 0\n",
 							"                attendance_status = 'Absent'\n",
-							"            attendance += f\"att_{student_id},{student_id},{school_year},{school_id},{single_date.strftime('%d/%m/%Y')},No,1,{section_id},{attendance_code},{presence_flag},{attendance_status},ClassSectionAttendance,0\\n\"\n",
+							"            attendance += f\"att_{self.att_id},{student_id},{school_year},{school_id},{single_date.strftime('%d/%m/%Y')},No,1,{section_id},{attendance_code},{presence_flag},{attendance_status},ClassSectionAttendance,0\\n\"\n",
+							"            self.att_id += 1\n",
 							"        return attendance\n",
 							"\n",
 							"\n",
