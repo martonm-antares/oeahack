@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "336bfaf5-f962-45ad-8e8f-dac15b28103d"
+				"spark.autotune.trackingId": "4c9b5fbe-54a9-43d2-a94d-4e62298d790c"
 			}
 		},
 		"metadata": {
@@ -39,7 +39,7 @@
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['school_year', 'string', 'partition-by'],\n",
 					"                                            ['school_id', 'string', 'no-op'],\n",
-					"                                            ['attendance_date', 'date', 'no-op'],\n",
+					"                                            ['attendance_date', 'string', 'no-op'],\n",
 					"                                            ['all_day', 'string', 'no-op'],\n",
 					"                                            ['Period', 'short', 'no-op'],\n",
 					"                                            ['section_id', 'string', 'no-op'],\n",
