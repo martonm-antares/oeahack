@@ -3901,7 +3901,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "51437510-854c-4bc4-8d78-01b1b2eb351e"
+						"spark.autotune.trackingId": "75b7cfe7-bcc1-44de-be4a-aeb3e7df3c04"
 					}
 				},
 				"metadata": {
@@ -3919,7 +3919,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
@@ -3976,6 +3975,9 @@
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
 							"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+							"\n",
+							"        #stage3\n",
+							"        oea.curate_incremental_data(self.source_folder, 'studentattendance')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
@@ -9804,14 +9806,11 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0b3ff39f-c2b1-4449-bde4-5a37d6213e83"
+						"spark.autotune.trackingId": "476fece9-9eed-49fb-92e7-2dd8e7d9f384"
 					}
 				},
 				"metadata": {
 					"saveOutput": true,
-					"synapse_widget": {
-						"version": "0.1"
-					},
 					"enableDebugMode": false,
 					"kernelspec": {
 						"name": "synapse_pyspark",
@@ -9833,7 +9832,7 @@
 						"nodeCount": 3,
 						"cores": 4,
 						"memory": 28,
-						"extraHeader": null
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -10068,6 +10067,23 @@
 							"            query2 = query2.start(np_destination_path)\n",
 							"            query2.awaitTermination()   # block until query is terminated, with stop() or with error; A StreamingQueryException will be thrown if an exception occurs.\n",
 							"            logger.info(query2.lastProgress)        \n",
+							"\n",
+							"    def curate_incremental_data(self, source_system, tablename):\n",
+							"        \"\"\" Curates data from stage2 and moves it to stage3 in the datalake. \"\"\"\n",
+							"\n",
+							"        source_path_pseudo = f'{self.stage2p}/{source_system}/{tablename}_pseudo'\n",
+							"        source_path_lookup = f'{self.stage2np}/{source_system}/{tablename}_lookup'\n",
+							"        dest_path_pseudo = f'{self.stage3p}/{source_system}/{tablename}_pseudo'\n",
+							"\n",
+							"        # load the delta tables from the source\n",
+							"        pseudo_df = self.load_delta(source_path_pseudo)\n",
+							"        lookup_df = self.load_delta(source_path_lookup)\n",
+							"\n",
+							"        # transform to target data model\n",
+							"\n",
+							"        # save to stage3 in delta lake\n",
+							"        pseudo_df.write.mode(\"append\").saveAsTable(dest_path_pseudo)\n",
+							"\n",
 							"\n",
 							"    def _merge_into_table(self, df, destination_path, checkpoints_path, condition):\n",
 							"        \"\"\" Merges data from the given dataframe into the delta table at the specified destination_path, based on the given condition.\n",
@@ -10392,7 +10408,6 @@
 							"\n",
 							"oea = OEA()"
 						],
-						"attachments": null,
 						"outputs": [],
 						"execution_count": 6
 					}
