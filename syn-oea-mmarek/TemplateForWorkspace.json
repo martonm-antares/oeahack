@@ -3901,7 +3901,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "5461034d-1a03-4f07-a328-f0b046489dbc"
+						"spark.autotune.trackingId": "aad4acb3-41df-4944-82bc-5d522fd4925c"
 					}
 				},
 				"metadata": {
@@ -3933,7 +3933,7 @@
 							"                                            ['Period', 'short', 'no-op'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
 							"                                            ['AttendanceCode', 'string', 'no-op'],\n",
-							"                                            ['PresenceFlag', 'bool', 'no-op'],\n",
+							"                                            ['PresenceFlag', 'boolean', 'no-op'],\n",
 							"                                            ['attendance_status', 'string', 'no-op'],\n",
 							"                                            ['attendance_type', 'string', 'no-op'],\n",
 							"                                            ['attendance_sequence', 'short', 'no-op']]\n",
@@ -3969,7 +3969,7 @@
 							"                                            ['PrimaryLanguage', 'string', 'no-op'],\n",
 							"                                            ['ELLStatus', 'string', 'no-op'],\n",
 							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
-							"                                            ['LowIncome', 'bool', 'no-op'],\n",
+							"                                            ['LowIncome', 'boolean', 'no-op'],\n",
 							"                                            ['CumulativeGPA', 'string', 'no-op'],]                                            \n",
 							"\n",
 							"    def ingest(self):\n",
