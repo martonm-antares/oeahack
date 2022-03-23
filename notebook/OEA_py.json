@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fc738dd2-24d3-4973-ab89-533fe8a620d8"
+				"spark.autotune.trackingId": "b6ef632a-b565-463f-8a79-40fe49b4a7cc"
 			}
 		},
 		"metadata": {
@@ -294,7 +294,7 @@
 					"\n",
 					"        # save to stage3 in delta lake\n",
 					"        #pseudo_df.write.mode(\"overwrite\").saveAsTable(dest_path_pseudo)\n",
-					"        pseudo_df.write.format('delta').save(self.path(\"self.stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")\n",
+					"        #pseudo_df.write.format('delta').save(self.path(\"self.stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")\n",
 					"\n",
 					"\n",
 					"    def _merge_into_table(self, df, destination_path, checkpoints_path, condition):\n",
