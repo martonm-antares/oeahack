@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "3d7b0e29-89ca-4b72-a755-058038ddd140"
+				"spark.autotune.trackingId": "647e5e35-e4b0-4e5b-ab96-f69a37d8bb3f"
 			}
 		},
 		"metadata": {
@@ -289,7 +289,7 @@
 					"        stage = self.stage2p\n",
 					"\n",
 					"        try:\n",
-					"            pseudo_df = spark.read.load(f\"{stage}/{source_system}/{tablename}_pseudo/school_year=2021/*\", format='delta')       \n",
+					"            pseudo_df = spark.read.load(f\"{stage}/{source_system}/{tablename}_pseudo/school_year=2021\", format='delta')       \n",
 					"        except AnalysisException as e:\n",
 					"            raise ValueError(\"MM--Failed to load. Are you sure you have the right path?\\nMore info below:\\n\" + str(e)) \n",
 					"\n",
