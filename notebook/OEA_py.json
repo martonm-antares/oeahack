@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ff24f2ad-fa05-4312-9d19-c37b4d38bec0"
+				"spark.autotune.trackingId": "3d7b0e29-89ca-4b72-a755-058038ddd140"
 			}
 		},
 		"metadata": {
@@ -286,9 +286,18 @@
 					"        source_path_lookup = f'stage2np/{source_system}/{tablename}_lookup/school_year=2021/*'\n",
 					"        dest_path_pseudo = f'{source_system}/{tablename}_pseudo'\n",
 					"\n",
+					"        stage = self.stage2p\n",
+					"\n",
+					"        try:\n",
+					"            pseudo_df = spark.read.load(f\"{stage}/{source_system}/{tablename}_pseudo/school_year=2021/*\", format='delta')       \n",
+					"        except AnalysisException as e:\n",
+					"            raise ValueError(\"MM--Failed to load. Are you sure you have the right path?\\nMore info below:\\n\" + str(e)) \n",
+					"\n",
+					"        \n",
+					"\n",
 					"        # load the delta tables from the source\n",
-					"        pseudo_df = self.load_delta(source_path_pseudo)\n",
-					"        lookup_df = self.load_delta(source_path_lookup)\n",
+					"        #pseudo_df = self.load(source_path_pseudo)\n",
+					"        #lookup_df = self.load_delta(source_path_lookup)\n",
 					"\n",
 					"        # transform to target data model\n",
 					"\n",
