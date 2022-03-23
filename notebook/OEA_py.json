@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "542dc2fb-669b-4557-8a7f-2c8b85da04d8"
+				"spark.autotune.trackingId": "ff24f2ad-fa05-4312-9d19-c37b4d38bec0"
 			}
 		},
 		"metadata": {
@@ -282,8 +282,8 @@
 					"    def curate_incremental_data(self, source_system, tablename):\n",
 					"        \"\"\" Curates data from stage2 and moves it to stage3 in the datalake. \"\"\"\n",
 					"\n",
-					"        source_path_pseudo = f'stage2p/{source_system}/{tablename}_pseudo/*'\n",
-					"        source_path_lookup = f'stage2np/{source_system}/{tablename}_lookup/*'\n",
+					"        source_path_pseudo = f'stage2p/{source_system}/{tablename}_pseudo/school_year=2021/*'\n",
+					"        source_path_lookup = f'stage2np/{source_system}/{tablename}_lookup/school_year=2021/*'\n",
 					"        dest_path_pseudo = f'{source_system}/{tablename}_pseudo'\n",
 					"\n",
 					"        # load the delta tables from the source\n",
