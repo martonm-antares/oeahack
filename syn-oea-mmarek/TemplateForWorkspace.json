@@ -9806,7 +9806,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "476fece9-9eed-49fb-92e7-2dd8e7d9f384"
+						"spark.autotune.trackingId": "bb051d8a-7033-4772-b851-a96daa589dbd"
 					}
 				},
 				"metadata": {
@@ -10071,9 +10071,9 @@
 							"    def curate_incremental_data(self, source_system, tablename):\n",
 							"        \"\"\" Curates data from stage2 and moves it to stage3 in the datalake. \"\"\"\n",
 							"\n",
-							"        source_path_pseudo = f'{self.stage2p}/{source_system}/{tablename}_pseudo'\n",
-							"        source_path_lookup = f'{self.stage2np}/{source_system}/{tablename}_lookup'\n",
-							"        dest_path_pseudo = f'{self.stage3p}/{source_system}/{tablename}_pseudo'\n",
+							"        source_path_pseudo = f'{self.stage2p}/{source_system}/{tablename}_pseudo/*'\n",
+							"        source_path_lookup = f'{self.stage2np}/{source_system}/{tablename}_lookup/*'\n",
+							"        dest_path_pseudo = f'{source_system}/{tablename}_pseudo'\n",
 							"\n",
 							"        # load the delta tables from the source\n",
 							"        pseudo_df = self.load_delta(source_path_pseudo)\n",
@@ -10082,7 +10082,8 @@
 							"        # transform to target data model\n",
 							"\n",
 							"        # save to stage3 in delta lake\n",
-							"        pseudo_df.write.mode(\"append\").saveAsTable(dest_path_pseudo)\n",
+							"        #pseudo_df.write.mode(\"overwrite\").saveAsTable(dest_path_pseudo)\n",
+							"        pseudo_df.write.format('delta').save(self.path(\"self.stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")\n",
 							"\n",
 							"\n",
 							"    def _merge_into_table(self, df, destination_path, checkpoints_path, condition):\n",
