@@ -123,7 +123,7 @@
 						"type": "IfCondition",
 						"dependsOn": [
 							{
-								"activity": "ingest to state2np and stage2p",
+								"activity": "transform and store in stage3",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -156,7 +156,7 @@
 												"value": "@pipeline().parameters.sourceDirectory",
 												"type": "Expression"
 											},
-											"stage": "2"
+											"stage": "3"
 										}
 									}
 								}
@@ -168,7 +168,7 @@
 						"type": "IfCondition",
 						"dependsOn": [
 							{
-								"activity": "ingest to state2np and stage2p",
+								"activity": "transform and store in stage3",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -193,7 +193,7 @@
 										},
 										"waitOnCompletion": true,
 										"parameters": {
-											"stageNum": "2",
+											"stageNum": "3",
 											"sourceDirectory": {
 												"value": "@pipeline().parameters.sourceDirectory",
 												"type": "Expression"
@@ -202,6 +202,37 @@
 									}
 								}
 							]
+						}
+					},
+					{
+						"name": "transform and store in stage3",
+						"type": "SynapseNotebook",
+						"dependsOn": [
+							{
+								"activity": "ingest to state2np and stage2p",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "Antares_DataTransform",
+								"type": "NotebookReference"
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "spark3p1sm",
+								"type": "BigDataPoolReference"
+							}
 						}
 					}
 				],
@@ -236,6 +267,7 @@
 				"[concat(variables('workspaceId'), '/notebooks/Antares_OEA')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/spark3p1sm')]",
 				"[concat(variables('workspaceId'), '/notebooks/OEA_connector')]",
+				"[concat(variables('workspaceId'), '/notebooks/Antares_DataTransform')]",
 				"[concat(variables('workspaceId'), '/pipelines/create_sql_db')]",
 				"[concat(variables('workspaceId'), '/pipelines/create_lake_db')]"
 			]
@@ -952,6 +984,316 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/create_SQLDB_stage3')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "set sqlDBName",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sqlDBName",
+							"value": {
+								"value": "sqls@{pipeline().parameters.stage}_@{pipeline().parameters.sourceDirectory}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "set sqlDBName",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[dbo].[sp_executesql]",
+							"storedProcedureParameters": {
+								"command": {
+									"value": {
+										"value": "IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '@{variables('sqlDBName')}') \nBEGIN\n  CREATE DATABASE @{variables('sqlDBName')}; \nEND;",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_SQL_Serverless_OEA",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"dbName": "master"
+							}
+						}
+					},
+					{
+						"name": "get folders in stageXp",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_ADLS_binary_folder",
+								"type": "DatasetReference",
+								"parameters": {
+									"filesystem": {
+										"value": "stage@{pipeline().parameters.stage}p",
+										"type": "Expression"
+									},
+									"directory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "get folders in stageXp",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('get folders in stageXp').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "create or alter view for pseduonymized tables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "command",
+											"value": "CREATE OR ALTER VIEW @{item().name} AS SELECT * FROM OPENROWSET( BULK 'https://@{pipeline().parameters.storageAccount}.dfs.core.windows.net/stage@{pipeline().parameters.stage}p/@{pipeline().parameters.sourceDirectory}/@{item().name}', FORMAT='DELTA' ) AS [r]"
+										}
+									],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[sp_executesql]",
+										"storedProcedureParameters": {
+											"command": {
+												"value": {
+													"value": "CREATE OR ALTER VIEW @{item().name} AS\nSELECT * FROM OPENROWSET(\nBULK 'https://@{pipeline().parameters.storageAccount}.dfs.core.windows.net/stage@{pipeline().parameters.stage}p/@{pipeline().parameters.sourceDirectory}/@{item().name}',\nFORMAT='DELTA'\n) AS [r]",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "LS_SQL_Serverless_OEA",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"dbName": {
+												"value": "@variables('sqlDBName')",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "get folders in stageXnp",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_ADLS_binary_folder",
+								"type": "DatasetReference",
+								"parameters": {
+									"filesystem": {
+										"value": "stage@{pipeline().parameters.stage}np",
+										"type": "Expression"
+									},
+									"directory": {
+										"value": "@pipeline().parameters.sourceDirectory",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach2",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "get folders in stageXnp",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('get folders in stageXnp').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "create or alter view for lookup tables",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "command",
+											"value": "CREATE OR ALTER VIEW @{item().name} AS SELECT * FROM OPENROWSET( BULK 'https://@{pipeline().parameters.storageAccount}.dfs.core.windows.net/stage@{pipeline().parameters.stage}p/@{pipeline().parameters.sourceDirectory}/@{item().name}', FORMAT='DELTA' ) AS [r]"
+										}
+									],
+									"typeProperties": {
+										"storedProcedureName": "[dbo].[sp_executesql]",
+										"storedProcedureParameters": {
+											"command": {
+												"value": {
+													"value": "CREATE OR ALTER VIEW @{item().name} AS\nSELECT * FROM OPENROWSET(\nBULK 'https://@{pipeline().parameters.storageAccount}.dfs.core.windows.net/stage@{pipeline().parameters.stage}np/@{pipeline().parameters.sourceDirectory}/@{item().name}',\nFORMAT='DELTA'\n) AS [r]",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "LS_SQL_Serverless_OEA",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"dbName": {
+												"value": "@variables('sqlDBName')",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"storageAccount": {
+						"type": "string",
+						"defaultValue": "stoeammarek"
+					},
+					"sourceDirectory": {
+						"type": "string",
+						"defaultValue": "contoso_sis"
+					},
+					"stage": {
+						"type": "string",
+						"defaultValue": "3"
+					}
+				},
+				"variables": {
+					"sqlDBName": {
+						"type": "String",
+						"defaultValue": "sqls3_db"
+					}
+				},
+				"folder": {
+					"name": "OEA_Framework/Ingest"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-15T01:57:13Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/LS_SQL_Serverless_OEA')]",
+				"[concat(variables('workspaceId'), '/datasets/DS_ADLS_binary_folder')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/create_lake_db')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -1010,7 +1352,7 @@
 				"parameters": {
 					"stageNum": {
 						"type": "string",
-						"defaultValue": "2"
+						"defaultValue": "3"
 					},
 					"sourceDirectory": {
 						"type": "string",
@@ -1318,7 +1660,7 @@
 					},
 					"stage": {
 						"type": "string",
-						"defaultValue": "2"
+						"defaultValue": "3"
 					}
 				},
 				"variables": {
@@ -3146,7 +3488,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f7a3e6f1-1443-4910-bda9-a66b611a06f6"
+						"spark.autotune.trackingId": "20e9af3d-23d8-4fcb-93a1-99b06334adc7"
 					}
 				},
 				"metadata": {
@@ -3171,21 +3513,19 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
 						],
 						"outputs": [],
-						"execution_count": 29
+						"execution_count": 1
 					},
 					{
 						"cell_type": "code",
@@ -3204,7 +3544,7 @@
 							"%run OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 30
+						"execution_count": 2
 					},
 					{
 						"cell_type": "code",
@@ -3233,7 +3573,6 @@
 							"# transformed table destinations (stage3)\r\n",
 							"dest_student_pseudo = f'{source_system}/dim_student_pseudo'\r\n",
 							"dest_student_loopup = f'{source_system}/dim_student_lookup'\r\n",
-							"dest_school_lookup = f'{source_system}/dim_school_lookup'\r\n",
 							"dest_class = f'{source_system}/dim_class'\r\n",
 							"dest_student_enrolment = f'{source_system}/fact_student_enrolment'\r\n",
 							"dest_student_attendance = f'{source_system}/fact_student_attendance'\r\n",
@@ -3255,14 +3594,10 @@
 							"\r\n",
 							"except AnalysisException as e:\r\n",
 							"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
-							"\r\n",
-							"\r\n",
-							"\r\n",
-							"# save to stage3 in delta lake\r\n",
-							"#pseudo_df.write.format('delta').save(oea.path(\"stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")"
+							""
 						],
 						"outputs": [],
-						"execution_count": 31
+						"execution_count": 3
 					},
 					{
 						"cell_type": "code",
@@ -3292,7 +3627,7 @@
 							"mark_and_demo_df = temp_mark_df.join(demographics_pseudo_df, \\\r\n",
 							"                                temp_mark_df.xstudent_id_pseudonym == demographics_pseudo_df.SIS_ID_pseudonym, \"inner\")\r\n",
 							"\r\n",
-							"# creat the student enrolment fact table by taking the studentID, class_sk, school_year, grade, graduation_year and status\r\n",
+							"# create the student enrolment fact table by taking the studentID, class_sk, school_year, grade, graduation_year and status\r\n",
 							"fact_student_enrolment_df = mark_and_demo_df.select(F.col('xstudent_id_pseudonym').alias('student_id_pseudonym'), \\\r\n",
 							"                                                'class_sk', \\\r\n",
 							"                                                F.col('Grade').alias('grade'), \\\r\n",
@@ -3331,7 +3666,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 54
+						"execution_count": 4
 					},
 					{
 						"cell_type": "code",
@@ -3348,10 +3683,18 @@
 							"collapsed": false
 						},
 						"source": [
-							"display(dim_student_pseudo_df)"
+							"# save the new tables to stage 3\r\n",
+							"\r\n",
+							"dim_student_pseudo_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_pseudo), header=True, mode=\"overwrite\")\r\n",
+							"dim_student_lookup_df.write.format('delta').save(oea.path(\"stage3np\", dest_student_loopup), header=True, mode=\"overwrite\")\r\n",
+							"dim_class_df.write.format('delta').save(oea.path(\"stage3np\", dest_class), header=True, mode=\"overwrite\")\r\n",
+							"fact_student_mark_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_sectionmark), header=True, mode=\"overwrite\")\r\n",
+							"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
+							"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
+							""
 						],
 						"outputs": [],
-						"execution_count": 55
+						"execution_count": 5
 					}
 				]
 			},
@@ -4133,7 +4476,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "75b7cfe7-bcc1-44de-be4a-aeb3e7df3c04"
+						"spark.autotune.trackingId": "3b173a34-8745-48d3-b733-5e57b1b072b9"
 					}
 				},
 				"metadata": {
@@ -4207,9 +4550,6 @@
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
 							"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
-							"\n",
-							"        #stage3\n",
-							"        oea.curate_incremental_data(self.source_folder, 'studentattendance')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
@@ -10038,7 +10378,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "21e4c14a-462d-48e2-940b-faccfa4ef2e9"
+						"spark.autotune.trackingId": "6b37b35c-2515-47a2-b183-c6035ec8a2fb"
 					}
 				},
 				"metadata": {
@@ -10298,32 +10638,6 @@
 							"            query2 = query2.start(np_destination_path)\n",
 							"            query2.awaitTermination()   # block until query is terminated, with stop() or with error; A StreamingQueryException will be thrown if an exception occurs.\n",
 							"            logger.info(query2.lastProgress)        \n",
-							"\n",
-							"    def curate_incremental_data(self, source_system, tablename):\n",
-							"        \"\"\" Curates data from stage2 and moves it to stage3 in the datalake. \"\"\"\n",
-							"\n",
-							"        source_path_pseudo = f'stage2p/{source_system}/{tablename}_pseudo/school_year=2021/*'\n",
-							"        source_path_lookup = f'stage2np/{source_system}/{tablename}_lookup/school_year=2021/*'\n",
-							"        dest_path_pseudo = f'{source_system}/{tablename}_pseudo'\n",
-							"\n",
-							"        stage = self.stage2p\n",
-							"\n",
-							"        try:\n",
-							"            pseudo_df = spark.read.load(f\"{stage}/{source_system}/{tablename}_pseudo/school_year=2021\", format='delta')       \n",
-							"        except AnalysisException as e:\n",
-							"            raise ValueError(\"MM--Failed to load. Are you sure you have the right path?\\nMore info below:\\n\" + str(e)) \n",
-							"\n",
-							"        \n",
-							"\n",
-							"        # load the delta tables from the source\n",
-							"        #pseudo_df = self.load(source_path_pseudo)\n",
-							"        #lookup_df = self.load_delta(source_path_lookup)\n",
-							"\n",
-							"        # transform to target data model\n",
-							"\n",
-							"        # save to stage3 in delta lake\n",
-							"        #pseudo_df.write.mode(\"overwrite\").saveAsTable(dest_path_pseudo)\n",
-							"        pseudo_df.write.format('delta').save(self.path(\"stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")\n",
 							"\n",
 							"\n",
 							"    def _merge_into_table(self, df, destination_path, checkpoints_path, condition):\n",
