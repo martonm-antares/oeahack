@@ -3126,6 +3126,238 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Antares_DataTransform')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "spark3p1sm",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "f7a3e6f1-1443-4910-bda9-a66b611a06f6"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/1735300c-0c18-453f-b3b7-8b49cbac9c06/resourceGroups/rg-oea-mmarek/providers/Microsoft.Synapse/workspaces/syn-oea-mmarek/bigDataPools/spark3p1sm",
+						"name": "spark3p1sm",
+						"type": "Spark",
+						"endpoint": "https://syn-oea-mmarek.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/spark3p1sm",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"from pyspark.sql.window import Window\r\n",
+							"import pyspark.sql.functions as F"
+						],
+						"outputs": [],
+						"execution_count": 29
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"%run OEA_py"
+						],
+						"outputs": [],
+						"execution_count": 30
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"source_system = 'contoso_sis'\r\n",
+							"\r\n",
+							"# source table locations\r\n",
+							"attendance_pseudo_path = 'studentattendance_pseudo/school_year=2021'\r\n",
+							"attendance_lookup_path = 'studentattendance_lookup/school_year=2021'\r\n",
+							"marks_pseudo_path = 'studentsectionmark_pseudo/school_year=2021'\r\n",
+							"marks_lookup_path = 'studentsectionmark_lookup/school_year=2021'\r\n",
+							"demographics_pseudo_path = 'studentdemographics_pseudo'\r\n",
+							"demographics_lookup_path = 'studentdemographics_lookup'\r\n",
+							"\r\n",
+							"# transformed table destinations (stage3)\r\n",
+							"dest_student_pseudo = f'{source_system}/dim_student_pseudo'\r\n",
+							"dest_student_loopup = f'{source_system}/dim_student_lookup'\r\n",
+							"dest_school_lookup = f'{source_system}/dim_school_lookup'\r\n",
+							"dest_class = f'{source_system}/dim_class'\r\n",
+							"dest_student_enrolment = f'{source_system}/fact_student_enrolment'\r\n",
+							"dest_student_attendance = f'{source_system}/fact_student_attendance'\r\n",
+							"dest_student_sectionmark = f'{source_system}/fact_student_sectionmark'\r\n",
+							"\r\n",
+							"source_stage_p = oea.stage2p\r\n",
+							"source_stage_np = oea.stage2np\r\n",
+							"\r\n",
+							"# load the delta tables from the source\r\n",
+							"try:\r\n",
+							"    attendance_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{attendance_pseudo_path}\", format='delta')\r\n",
+							"    #attendance_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{attendance_lookup_path}\", format='delta')\r\n",
+							"\r\n",
+							"    marks_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{marks_pseudo_path}\", format='delta')\r\n",
+							"    #marks_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{marks_lookup_path}\", format='delta')\r\n",
+							"\r\n",
+							"    demographics_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{demographics_pseudo_path}\", format='delta')\r\n",
+							"    demographics_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{demographics_lookup_path}\", format='delta')\r\n",
+							"\r\n",
+							"except AnalysisException as e:\r\n",
+							"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
+							"\r\n",
+							"\r\n",
+							"\r\n",
+							"# save to stage3 in delta lake\r\n",
+							"#pseudo_df.write.format('delta').save(oea.path(\"stage3p\", dest_path_pseudo), header=True, mode=\"overwrite\")"
+						],
+						"outputs": [],
+						"execution_count": 31
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"# transform to target data model\r\n",
+							"\r\n",
+							"# create a temporary marks df that inlcudes an additional class_sk identifer - this will be used to remove a 'class' from this table\r\n",
+							"temp_mark_df = marks_pseudo_df.withColumn(\"class_sk\", \\\r\n",
+							"                                    F.dense_rank().over(Window.orderBy(marks_pseudo_df.school_year, \\\r\n",
+							"                                    marks_pseudo_df.term_id, marks_pseudo_df.section_id)))\r\n",
+							"\r\n",
+							"temp_mark_df = temp_mark_df.withColumnRenamed('student_id_pseudonym', 'xstudent_id_pseudonym')\r\n",
+							"\r\n",
+							"#join the demographics table to the marks table using student id\r\n",
+							"mark_and_demo_df = temp_mark_df.join(demographics_pseudo_df, \\\r\n",
+							"                                temp_mark_df.xstudent_id_pseudonym == demographics_pseudo_df.SIS_ID_pseudonym, \"inner\")\r\n",
+							"\r\n",
+							"# creat the student enrolment fact table by taking the studentID, class_sk, school_year, grade, graduation_year and status\r\n",
+							"fact_student_enrolment_df = mark_and_demo_df.select(F.col('xstudent_id_pseudonym').alias('student_id_pseudonym'), \\\r\n",
+							"                                                'class_sk', \\\r\n",
+							"                                                F.col('Grade').alias('grade'), \\\r\n",
+							"                                                F.col('Graduation_Year').alias('graduation_year'), \\\r\n",
+							"                                                F.col('Status').alias('status'))\r\n",
+							"                                                \r\n",
+							"# we can now create the class dimension and remove section_id, school_year and term_id from the marks df\r\n",
+							"dim_class_df = temp_mark_df.select('class_sk', 'school_year', 'term_id', 'section_id').distinct()\r\n",
+							"\r\n",
+							"# we can now remove school_year, term_id and section_id from the temp_mark_df \r\n",
+							"fact_student_mark_df = temp_mark_df.withColumnRenamed('xstudent_id_pseudonym', 'student_id_pseudonym') \\\r\n",
+							"                                .drop('school_year') \\\r\n",
+							"                                .drop('term_id') \\\r\n",
+							"                                .drop('section_id') \\\r\n",
+							"                                .distinct()\r\n",
+							"\r\n",
+							"# create the student attendance fact table \r\n",
+							"temp_attendance_df = attendance_pseudo_df.withColumnRenamed('section_id', 'xsection_id').drop('school_year')\r\n",
+							"\r\n",
+							"# join with the class dim and bring in teh class_sk attribute\r\n",
+							"fact_student_attendance_df = temp_attendance_df.join(dim_class_df, temp_attendance_df.xsection_id == dim_class_df.section_id, \"inner\")\r\n",
+							"\r\n",
+							"# remove the attributes that are not required\r\n",
+							"fact_student_attendance_df = fact_student_attendance_df.drop('section_id') \\\r\n",
+							"                                                        .drop('xsection_id') \\\r\n",
+							"                                                        .drop('school_year') \\\r\n",
+							"                                                        .drop('term_id')\r\n",
+							"\r\n",
+							"# convert the student demographic tables to our student dimensions\r\n",
+							"dim_student_pseudo_df = demographics_pseudo_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym') \\\r\n",
+							"                                                .drop('Grade') \\\r\n",
+							"                                                .drop('Graduation_Year') \\\r\n",
+							"                                                .drop('Status')\r\n",
+							"\r\n",
+							"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 54
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": false
+						},
+						"source": [
+							"display(dim_student_pseudo_df)"
+						],
+						"outputs": [],
+						"execution_count": 55
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Antares_OEA')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -9806,7 +10038,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "4a087f8d-7e34-46ea-af94-7dbc000af27a"
+						"spark.autotune.trackingId": "21e4c14a-462d-48e2-940b-faccfa4ef2e9"
 					}
 				},
 				"metadata": {
@@ -9831,8 +10063,7 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
