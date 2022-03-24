@@ -1,5 +1,5 @@
 {
-	"name": "create_sql_db",
+	"name": "create_SQLDB_stage3",
 	"properties": {
 		"activities": [
 			{
@@ -288,7 +288,7 @@
 		"variables": {
 			"sqlDBName": {
 				"type": "String",
-				"defaultValue": "sqls2_mydb"
+				"defaultValue": "sqls3_db"
 			}
 		},
 		"folder": {
