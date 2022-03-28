@@ -261,7 +261,7 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"endpoints": {
-									"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data\",\"sinkFilename\": \"images.csv\"}]')",
+									"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data/images\",\"sinkFilename\": \"images.csv\"}]')",
 									"type": "Expression"
 								},
 								"sinkFilesystem": "stage1np",
@@ -884,7 +884,7 @@
 					},
 					"sinkFilename": {
 						"type": "string",
-						"defaultValue": "support_data/images.csv"
+						"defaultValue": "support_data/images/images.csv"
 					}
 				},
 				"folder": {
@@ -959,7 +959,7 @@
 						"defaultValue": [
 							{
 								"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv",
-								"sinkDirectory": "support_data",
+								"sinkDirectory": "support_data/images",
 								"sinkFilename": "images.csv"
 							}
 						]
@@ -971,11 +971,6 @@
 					"timezone": {
 						"type": "string",
 						"defaultValue": "Eastern Standard Time"
-					}
-				},
-				"variables": {
-					"currentDateTime": {
-						"type": "String"
 					}
 				},
 				"folder": {
@@ -4481,7 +4476,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "acac179a-67bd-443f-bf07-4a928e066692"
+						"spark.autotune.trackingId": "fc664f25-28f8-4aaa-b74d-2637fe85b3f8"
 					}
 				},
 				"metadata": {
