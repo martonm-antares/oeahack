@@ -3490,7 +3490,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "75afd195-bc85-488c-bb2f-3f49e0a6dd52"
+						"spark.autotune.trackingId": "f36df5d9-da4c-4472-a4c6-c691354a82a4"
 					}
 				},
 				"metadata": {
@@ -3594,7 +3594,7 @@
 							"    demographics_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{demographics_pseudo_path}\", format='delta')\r\n",
 							"    demographics_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{demographics_lookup_path}\", format='delta')\r\n",
 							"\r\n",
-							"    images_df = spark.read.load(f\"{source_stage_p}/support_data/images\", format='delta')\r\n",
+							"    images_df = spark.read.load(f\"{source_stage_p}/support_data/images_pseudo\", format='delta')\r\n",
 							"\r\n",
 							"except AnalysisException as e:\r\n",
 							"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
