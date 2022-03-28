@@ -184,6 +184,12 @@
 						"referenceName": "Antares_DataTransform",
 						"type": "NotebookReference"
 					},
+					"parameters": {
+						"schoolYears": {
+							"value": "2021",
+							"type": "string"
+						}
+					},
 					"snapshot": true,
 					"sparkPool": {
 						"referenceName": "spark3p1sm",
@@ -199,7 +205,7 @@
 			},
 			"sourceDirectory": {
 				"type": "string",
-				"defaultValue": "contoso_sis"
+				"defaultValue": "generated_data"
 			},
 			"createSQLDB": {
 				"type": "bool",

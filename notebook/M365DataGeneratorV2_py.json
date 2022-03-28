@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6e97f2a6-6239-4983-828d-c3ee499f58cc"
+				"spark.autotune.trackingId": "e73ac25a-3aa5-4bfe-a7f5-9fe65c2781dc"
 			}
 		},
 		"metadata": {
@@ -66,7 +66,7 @@
 					"\n",
 					"\n",
 					"class M365DataGenerator:\n",
-					"    def __init__(self, activity_min_per_person=5, activity_max_per_person=20, students_per_school=100, classes_in_student_schedule=6, students_per_section=25, student_teacher_ratio=9, include_optional_fields=False,\n",
+					"    def __init__(self, activity_min_per_person=5, activity_max_per_person=20, students_per_school=100, classes_in_student_schedule=6, students_per_section=25, student_teacher_ratio=9, include_optional_fields=True,\n",
 					"                 fall_semester_start_date='2021-02-15', fall_semester_end_date='2021-06-15', spring_semester_start_date='2021-07-10', spring_semester_end_date='2021-12-10'):\n",
 					"        # Set a seed value in Faker so it generates the same values every time it's run\n",
 					"        self.faker = Faker('en_US')\n",
@@ -107,9 +107,9 @@
 					"            for key in m365_data.keys(): \n",
 					"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\n",
 					"\n",
-					"            writer.write(f'contoso_sis/studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\n",
-					"            writer.write(f'contoso_sis/studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\n",
-					"            writer.write(f'contoso_sis/studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
+					"            writer.write(f'generated_data/studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\n",
+					"            writer.write(f'generated_data/studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\n",
+					"            writer.write(f'generated_data/studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
 					"\n",
 					"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\n",
 					"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\n",

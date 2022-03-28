@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "20e9af3d-23d8-4fcb-93a1-99b06334adc7"
+				"spark.autotune.trackingId": "b6f0948c-5684-4246-ae73-faac0747d7ed"
 			}
 		},
 		"metadata": {
@@ -88,13 +88,13 @@
 					}
 				},
 				"source": [
-					"source_system = 'contoso_sis'\r\n",
+					"source_system = 'generated_data'\r\n",
 					"\r\n",
-					"# source table locations\r\n",
-					"attendance_pseudo_path = 'studentattendance_pseudo/school_year=2021'\r\n",
-					"attendance_lookup_path = 'studentattendance_lookup/school_year=2021'\r\n",
-					"marks_pseudo_path = 'studentsectionmark_pseudo/school_year=2021'\r\n",
-					"marks_lookup_path = 'studentsectionmark_lookup/school_year=2021'\r\n",
+					"# source table locations. We are only loading 1 year worth of data for this\r\n",
+					"attendance_pseudo_path = f'studentattendance_pseudo/school_year={schoolYears}'\r\n",
+					"attendance_lookup_path = f'studentattendance_lookup/school_year={schoolYears}'\r\n",
+					"marks_pseudo_path = f'studentsectionmark_pseudo/school_year={schoolYears}'\r\n",
+					"marks_lookup_path = f'studentsectionmark_lookup/school_year={schoolYears}'\r\n",
 					"demographics_pseudo_path = 'studentdemographics_pseudo'\r\n",
 					"demographics_lookup_path = 'studentdemographics_lookup'\r\n",
 					"\r\n",
