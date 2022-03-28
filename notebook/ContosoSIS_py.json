@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "17b66eb6-85b2-4a67-b4b8-7a2721b8842f"
+				"spark.autotune.trackingId": "206ae807-4dc5-4cae-9d18-206a52ea9b7e"
 			}
 		},
 		"metadata": {
@@ -81,12 +81,18 @@
 					"                                            ['ELLStatus', 'string', 'no-op'],\n",
 					"                                            ['SpecialEducation', 'string', 'no-op'],\n",
 					"                                            ['LowIncome', 'integer', 'no-op'],\n",
-					"                                            ['CumulativeGPA', 'double', 'no-op'],]                                            \n",
+					"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
+					"\n",
+					"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
+					"                                    ['Image', 'string', 'no-op']]                                    \n",
 					"\n",
 					"    def ingest(self):\n",
 					"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
 					"        oea.ingest_snapshot_data(self.source_folder, 'studentsectionmark', self.schemas['studentsectionmark'], 'school_year', 'id')\n",
 					"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
+					"\n",
+					"        # now ingest the supporting datasets\n",
+					"        oea.ingest_incremental_data(\"support_data\", 'images', self.schemas['images'], 'school_year', 'id')\n",
 					"\n",
 					"contoso_sis = ContosoSIS()"
 				],
