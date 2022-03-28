@@ -4481,7 +4481,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "311746be-ad44-469e-aa0d-953f292a57b4"
+						"spark.autotune.trackingId": "acac179a-67bd-443f-bf07-4a928e066692"
 					}
 				},
 				"metadata": {
@@ -4561,7 +4561,7 @@
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 							"\n",
 							"        # now ingest the supporting datasets\n",
-							"        oea.ingest_incremental_data(\"support_data\", 'images', self.schemas['images'], 'school_year', 'Category')\n",
+							"        oea.ingest_incremental_data(\"support_data\", 'images', self.schemas['images'], 'Category', 'Category')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
