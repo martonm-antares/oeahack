@@ -228,6 +228,12 @@
 								"referenceName": "Antares_DataTransform",
 								"type": "NotebookReference"
 							},
+							"parameters": {
+								"schoolYears": {
+									"value": "2021",
+									"type": "string"
+								}
+							},
 							"snapshot": true,
 							"sparkPool": {
 								"referenceName": "spark3p1sm",
@@ -247,7 +253,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "contoso_sis"
+						"defaultValue": "generated_data"
 					},
 					"createSQLDB": {
 						"type": "bool",
@@ -1356,7 +1362,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "contoso_sis"
+						"defaultValue": "generated_data"
 					}
 				},
 				"folder": {
@@ -1656,7 +1662,7 @@
 					},
 					"sourceDirectory": {
 						"type": "string",
-						"defaultValue": "contoso_sis"
+						"defaultValue": "generated_data"
 					},
 					"stage": {
 						"type": "string",
@@ -3488,7 +3494,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "20e9af3d-23d8-4fcb-93a1-99b06334adc7"
+						"spark.autotune.trackingId": "b6f0948c-5684-4246-ae73-faac0747d7ed"
 					}
 				},
 				"metadata": {
@@ -3560,13 +3566,13 @@
 							}
 						},
 						"source": [
-							"source_system = 'contoso_sis'\r\n",
+							"source_system = 'generated_data'\r\n",
 							"\r\n",
-							"# source table locations\r\n",
-							"attendance_pseudo_path = 'studentattendance_pseudo/school_year=2021'\r\n",
-							"attendance_lookup_path = 'studentattendance_lookup/school_year=2021'\r\n",
-							"marks_pseudo_path = 'studentsectionmark_pseudo/school_year=2021'\r\n",
-							"marks_lookup_path = 'studentsectionmark_lookup/school_year=2021'\r\n",
+							"# source table locations. We are only loading 1 year worth of data for this\r\n",
+							"attendance_pseudo_path = f'studentattendance_pseudo/school_year={schoolYears}'\r\n",
+							"attendance_lookup_path = f'studentattendance_lookup/school_year={schoolYears}'\r\n",
+							"marks_pseudo_path = f'studentsectionmark_pseudo/school_year={schoolYears}'\r\n",
+							"marks_lookup_path = f'studentsectionmark_lookup/school_year={schoolYears}'\r\n",
 							"demographics_pseudo_path = 'studentdemographics_pseudo'\r\n",
 							"demographics_lookup_path = 'studentdemographics_lookup'\r\n",
 							"\r\n",
@@ -3722,7 +3728,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f2ddb5b1-0ecb-4cfe-a847-ce4a40b4b0d8"
+						"spark.autotune.trackingId": "d899ebd1-05f1-4865-a4a3-939b007a50c1"
 					}
 				},
 				"metadata": {
@@ -3822,13 +3828,7 @@
 							"\r\n",
 							"# the data generator currently does not work with more than 1 school at a time\r\n",
 							"dataGen.generate_data(numberOfSchools, writer)\r\n",
-							"\r\n",
-							"#oea = OEA()\r\n",
-							"#oea.rm_if_exists(oea.stage1np + '/generated/m365_test')\r\n",
-							"#oea.rm_if_exists(oea.stage1np + '/generated/contoso_sis_test')\r\n",
-							"#data_generator = M365DataGenerator(activity_max_per_person=15)\r\n",
-							"#data_lake_writer = DataLakeWriter(oea.stage1np)\r\n",
-							"#data_generator.generate_data(num_of_schools=2, writer=data_lake_writer)"
+							""
 						],
 						"outputs": [],
 						"execution_count": 84
@@ -4476,7 +4476,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3b173a34-8745-48d3-b733-5e57b1b072b9"
+						"spark.autotune.trackingId": "9a6e94c0-769e-4a71-85f1-2ca6db3c9978"
 					}
 				},
 				"metadata": {
@@ -4496,13 +4496,13 @@
 						"cell_type": "code",
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
-							"    def __init__(self, source_folder='contoso_sis', pseudonymize = True):\n",
+							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
 							"        BaseOEAModule.__init__(self, source_folder, pseudonymize)\n",
 							"        self.schemas['studentattendance'] = [['id', 'string', 'no-op'],\n",
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
-							"                                            ['attendance_date', 'string', 'no-op'],\n",
+							"                                            ['attendance_date', 'date', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
 							"                                            ['Period', 'short', 'no-op'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
@@ -4536,7 +4536,7 @@
 							"                                            ['Grade', 'string', 'no-op'],\n",
 							"                                            ['State ID', 'string', 'hash'],\n",
 							"                                            ['Status', 'string', 'no-op'],\n",
-							"                                            ['Birthdate', 'string', 'no-op'],\n",
+							"                                            ['Birthdate', 'date', 'hash'],\n",
 							"                                            ['Graduation Year', 'string', 'no-op'],\n",
 							"                                            ['Gender', 'string', 'no-op'],\n",
 							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
@@ -7206,7 +7206,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6e97f2a6-6239-4983-828d-c3ee499f58cc"
+						"spark.autotune.trackingId": "e73ac25a-3aa5-4bfe-a7f5-9fe65c2781dc"
 					}
 				},
 				"metadata": {
@@ -7254,7 +7254,7 @@
 							"\n",
 							"\n",
 							"class M365DataGenerator:\n",
-							"    def __init__(self, activity_min_per_person=5, activity_max_per_person=20, students_per_school=100, classes_in_student_schedule=6, students_per_section=25, student_teacher_ratio=9, include_optional_fields=False,\n",
+							"    def __init__(self, activity_min_per_person=5, activity_max_per_person=20, students_per_school=100, classes_in_student_schedule=6, students_per_section=25, student_teacher_ratio=9, include_optional_fields=True,\n",
 							"                 fall_semester_start_date='2021-02-15', fall_semester_end_date='2021-06-15', spring_semester_start_date='2021-07-10', spring_semester_end_date='2021-12-10'):\n",
 							"        # Set a seed value in Faker so it generates the same values every time it's run\n",
 							"        self.faker = Faker('en_US')\n",
@@ -7295,9 +7295,9 @@
 							"            for key in m365_data.keys(): \n",
 							"                writer.write(f'm365/{datetime_str}/{key}/part1.csv', m365_data[key])\n",
 							"\n",
-							"            writer.write(f'contoso_sis/studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\n",
-							"            writer.write(f'contoso_sis/studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\n",
-							"            writer.write(f'contoso_sis/studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
+							"            writer.write(f'generated_data/studentattendance/{datetime_str}/part1.csv', school_data.pop('_attendance'))\n",
+							"            writer.write(f'generated_data/studentsectionmark/{datetime_str}/part1.csv', school_data.pop('_section_marks'))\n",
+							"            writer.write(f'generated_data/studentdemographics/{datetime_str}/part1.csv', self.list_of_dict_to_csv(school_data['_students']))\n",
 							"\n",
 							"            start_date = datetime.strptime(self.fall_semester_start_date, \"%Y-%m-%d\")\n",
 							"            end_date = datetime.strptime(self.spring_semester_end_date, \"%Y-%m-%d\")\n",
