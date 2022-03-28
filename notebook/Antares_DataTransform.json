@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "9d2dd1e8-85ef-40a0-8560-8d6ba7df99f0"
+				"spark.autotune.trackingId": "98dfa8bd-e11e-4efe-9d9e-bdecc214080c"
 			}
 		},
 		"metadata": {
@@ -190,8 +190,8 @@
 					"                                                .drop('Status')\r\n",
 					"\r\n",
 					"# add a new column that represents lowincome as a string value\r\n",
-					"dim_student_pseudo_df = dim_student_pseudo_df.withColumn(\"Income\", F.when((dim_student_pseudo_df.LowIncome == 1), lit(\"Low Income\")) \\\r\n",
-					"                                                            .otherwise(lit(\"High Income\")))\r\n",
+					"dim_student_pseudo_df = dim_student_pseudo_df.withColumn(\"Income\", F.when((dim_student_pseudo_df.LowIncome == 1), F.lit(\"Low Income\")) \\\r\n",
+					"                                                            .F.otherwise(F.lit(\"High Income\")))\r\n",
 					"\r\n",
 					"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 					""
