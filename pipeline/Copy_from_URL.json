@@ -80,7 +80,7 @@
 		"parameters": {
 			"URL": {
 				"type": "string",
-				"defaultValue": "https://raw.githubusercontent.com/microsoft/OpenEduAnalytics/main/modules/Contoso_SIS/test_data/studentattendance.csv"
+				"defaultValue": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv"
 			},
 			"sinkFilesystem": {
 				"type": "string",
@@ -88,7 +88,7 @@
 			},
 			"sinkFilename": {
 				"type": "string",
-				"defaultValue": "contoso_sis/example1/studentattendance.csv"
+				"defaultValue": "support_data/images.csv"
 			}
 		},
 		"folder": {

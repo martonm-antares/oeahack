@@ -42,6 +42,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Extract from source to stage1np",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -194,6 +200,28 @@
 					"sparkPool": {
 						"referenceName": "spark3p1sm",
 						"type": "BigDataPoolReference"
+					}
+				}
+			},
+			{
+				"name": "Extract from source to stage1np",
+				"description": "Supporting Data files",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Copy_from_each_URL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"endpoints": {
+							"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data\",\"sinkFilename\": \"images.csv\"}]')",
+							"type": "Expression"
+						},
+						"sinkFilesystem": "stage1np",
+						"timezone": "Eastern Standard Time"
 					}
 				}
 			}

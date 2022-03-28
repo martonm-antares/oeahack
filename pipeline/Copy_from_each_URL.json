@@ -6,14 +6,7 @@
 			{
 				"name": "get data for each endpoint",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Set currentDateTime",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -44,26 +37,13 @@
 										"type": "Expression"
 									},
 									"sinkFilename": {
-										"value": "@{item().sinkDirectory}/@{variables('currentDateTime')}/@{item().sinkFilename}",
+										"value": "@{item().sinkDirectory}/@{item().sinkFilename}",
 										"type": "Expression"
 									}
 								}
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Set currentDateTime",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "currentDateTime",
-					"value": {
-						"value": "@{formatDateTime(convertTimeZone(utcnow(), 'UTC', pipeline().parameters.timezone), 'yyyy-MM-ddTHHmm_ss')}",
-						"type": "Expression"
-					}
 				}
 			}
 		],
@@ -72,19 +52,9 @@
 				"type": "array",
 				"defaultValue": [
 					{
-						"URL": "https://raw.githubusercontent.com/microsoft/OpenEduAnalytics/main/modules/Student_and_School_Data_Systems/test_data/batch1/studentattendance.csv",
-						"sinkDirectory": "contoso_sis/studentattendance",
-						"sinkFilename": "part1.csv"
-					},
-					{
-						"URL": "https://raw.githubusercontent.com/microsoft/OpenEduAnalytics/main/modules/Student_and_School_Data_Systems/test_data/batch1/studentdemographics.csv",
-						"sinkDirectory": "contoso_sis/studentdemographics",
-						"sinkFilename": "part1.csv"
-					},
-					{
-						"URL": "https://raw.githubusercontent.com/microsoft/OpenEduAnalytics/main/modules/Student_and_School_Data_Systems/test_data/batch1/studentsectionmark.csv",
-						"sinkDirectory": "contoso_sis/studentsectionmark",
-						"sinkFilename": "part1.csv"
+						"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv",
+						"sinkDirectory": "support_data",
+						"sinkFilename": "images.csv"
 					}
 				]
 			},
