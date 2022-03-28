@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "27f29a5b-ae88-4d1f-9c88-d0339e1cb4cb"
+				"spark.autotune.trackingId": "c1dd185b-844d-4b15-81f4-d0c3ed3cec3d"
 			}
 		},
 		"metadata": {
@@ -105,6 +105,9 @@
 					"dest_student_enrolment = f'{source_system}/fact_student_enrolment'\r\n",
 					"dest_student_attendance = f'{source_system}/fact_student_attendance'\r\n",
 					"dest_student_sectionmark = f'{source_system}/fact_student_sectionmark'\r\n",
+					"\r\n",
+					"# supporting datasets\r\n",
+					"dest_images = f'{source_system}/images'\r\n",
 					"\r\n",
 					"source_stage_p = oea.stage2p\r\n",
 					"source_stage_np = oea.stage2np\r\n",
@@ -221,7 +224,7 @@
 					"fact_student_mark_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_sectionmark), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
-					"images_df.write.format('delta').save(oea.path(\"stage3p\", \"support_data/images_pseudo\"), header=True, mode=\"overwrite\")\r\n",
+					"images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
 					""
 				],
 				"execution_count": 5
