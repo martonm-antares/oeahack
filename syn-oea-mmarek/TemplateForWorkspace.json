@@ -3454,7 +3454,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f73a815b-2a5f-4ab6-9435-23cd3cb3ae3f"
+						"spark.autotune.trackingId": "54374712-4324-41fd-bd3b-53a9a392f334"
 					}
 				},
 				"metadata": {
@@ -3479,13 +3479,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -3629,7 +3631,7 @@
 							"                                                .drop('Status')\r\n",
 							"\r\n",
 							"# add a new column that represents lowincome as a string value\r\n",
-							"dim_student_pseudo_df = dim_student_pseudo_df.withColumn(\"Income\", when((dim_student_pseudo_df.LowIncome == 1), lit(\"Low Income\")) \\\r\n",
+							"dim_student_pseudo_df = dim_student_pseudo_df.withColumn(\"Income\", F.when((dim_student_pseudo_df.LowIncome == 1), lit(\"Low Income\")) \\\r\n",
 							"                                                            .otherwise(lit(\"High Income\")))\r\n",
 							"\r\n",
 							"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
@@ -4440,7 +4442,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "66ea97bb-e49c-4815-93ab-30d75856bc06"
+						"spark.autotune.trackingId": "17b66eb6-85b2-4a67-b4b8-7a2721b8842f"
 					}
 				},
 				"metadata": {
@@ -4458,7 +4460,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
