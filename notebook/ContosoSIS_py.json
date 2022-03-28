@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "8dc3f338-efcb-4671-afe8-5ba0d9f9a256"
+				"spark.autotune.trackingId": "0703e3e2-2bd0-4b11-9ffd-6bd9739c87ae"
 			}
 		},
 		"metadata": {
@@ -39,7 +39,7 @@
 					"                                            ['student_id', 'string', 'hash'],\n",
 					"                                            ['school_year', 'string', 'partition-by'],\n",
 					"                                            ['school_id', 'string', 'no-op'],\n",
-					"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
+					"                                            ['attendance_date', 'string', 'no-op'],\n",
 					"                                            ['all_day', 'string', 'no-op'],\n",
 					"                                            ['Period', 'short', 'no-op'],\n",
 					"                                            ['section_id', 'string', 'no-op'],\n",
@@ -73,7 +73,7 @@
 					"                                            ['Grade', 'string', 'no-op'],\n",
 					"                                            ['State ID', 'string', 'hash'],\n",
 					"                                            ['Status', 'string', 'no-op'],\n",
-					"                                            ['Birthdate', 'timestamp', 'hash'],\n",
+					"                                            ['Birthdate', 'string', 'hash'],\n",
 					"                                            ['Graduation Year', 'string', 'no-op'],\n",
 					"                                            ['Gender', 'string', 'no-op'],\n",
 					"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
@@ -81,7 +81,7 @@
 					"                                            ['ELLStatus', 'string', 'no-op'],\n",
 					"                                            ['SpecialEducation', 'string', 'no-op'],\n",
 					"                                            ['LowIncome', 'integer', 'no-op'],\n",
-					"                                            ['CumulativeGPA', 'string', 'no-op'],]                                            \n",
+					"                                            ['CumulativeGPA', 'float', 'no-op'],]                                            \n",
 					"\n",
 					"    def ingest(self):\n",
 					"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
