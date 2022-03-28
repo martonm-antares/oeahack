@@ -3454,7 +3454,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "a5b495d1-588c-428a-9185-87cb9cd3ca5d"
+						"spark.autotune.trackingId": "f73a815b-2a5f-4ab6-9435-23cd3cb3ae3f"
 					}
 				},
 				"metadata": {
@@ -3479,15 +3479,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -4442,7 +4440,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0703e3e2-2bd0-4b11-9ffd-6bd9739c87ae"
+						"spark.autotune.trackingId": "66ea97bb-e49c-4815-93ab-30d75856bc06"
 					}
 				},
 				"metadata": {
@@ -4460,6 +4458,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -4510,7 +4509,7 @@
 							"                                            ['ELLStatus', 'string', 'no-op'],\n",
 							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
 							"                                            ['LowIncome', 'integer', 'no-op'],\n",
-							"                                            ['CumulativeGPA', 'float', 'no-op'],]                                            \n",
+							"                                            ['CumulativeGPA', 'double', 'no-op'],]                                            \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
