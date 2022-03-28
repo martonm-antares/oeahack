@@ -2590,46 +2590,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "SELECT TOP (100) [id]\n,[student_id_pseudonym]\n,[school_year]\n,[school_id]\n,[attendance_date]\n,[all_day]\n,[attendance_sequence]\n,[Period]\n,[section_id]\n,[AttendanceCode]\n,[PresenceFlag]\n,[attendance_status]\n,[attendance_type]\n FROM [dbo].[studentattendance_pseudo]",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "sqls2_generated_data",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/firstTenStudents')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": "SELECT TOP (10) [student_id]\n,[school_year]\n,[student_id_pseudonym]\n FROM [dbo].[studentattendance_lookup]",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "sqls2_contoso_sis",
-						"poolName": "Built-in"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/1_read_me')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -3494,7 +3454,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "b6f0948c-5684-4246-ae73-faac0747d7ed"
+						"spark.autotune.trackingId": "a5b495d1-588c-428a-9185-87cb9cd3ca5d"
 					}
 				},
 				"metadata": {
@@ -3519,13 +3479,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -3667,6 +3629,10 @@
 							"                                                .drop('Grade') \\\r\n",
 							"                                                .drop('Graduation_Year') \\\r\n",
 							"                                                .drop('Status')\r\n",
+							"\r\n",
+							"# add a new column that represents lowincome as a string value\r\n",
+							"dim_student_pseudo_df = dim_student_pseudo_df.withColumn(\"Income\", when((dim_student_pseudo_df.LowIncome == 1), lit(\"Low Income\")) \\\r\n",
+							"                                                            .otherwise(lit(\"High Income\")))\r\n",
 							"\r\n",
 							"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 							""
@@ -4476,7 +4442,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "4e2cb075-2b3b-424a-aafe-07dc34e46139"
+						"spark.autotune.trackingId": "0703e3e2-2bd0-4b11-9ffd-6bd9739c87ae"
 					}
 				},
 				"metadata": {
@@ -4494,7 +4460,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -4503,7 +4468,7 @@
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
-							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
+							"                                            ['attendance_date', 'string', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
 							"                                            ['Period', 'short', 'no-op'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
@@ -4537,7 +4502,7 @@
 							"                                            ['Grade', 'string', 'no-op'],\n",
 							"                                            ['State ID', 'string', 'hash'],\n",
 							"                                            ['Status', 'string', 'no-op'],\n",
-							"                                            ['Birthdate', 'timestamp', 'hash'],\n",
+							"                                            ['Birthdate', 'string', 'hash'],\n",
 							"                                            ['Graduation Year', 'string', 'no-op'],\n",
 							"                                            ['Gender', 'string', 'no-op'],\n",
 							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
@@ -4545,7 +4510,7 @@
 							"                                            ['ELLStatus', 'string', 'no-op'],\n",
 							"                                            ['SpecialEducation', 'string', 'no-op'],\n",
 							"                                            ['LowIncome', 'integer', 'no-op'],\n",
-							"                                            ['CumulativeGPA', 'string', 'no-op'],]                                            \n",
+							"                                            ['CumulativeGPA', 'float', 'no-op'],]                                            \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
