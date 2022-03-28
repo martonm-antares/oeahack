@@ -3490,7 +3490,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "ffe14a2e-72e4-4e2b-8ec0-d684bc550728"
+						"spark.autotune.trackingId": "d6533f51-f678-4fcc-adf6-d68ff6c70fcd"
 					}
 				},
 				"metadata": {
@@ -3515,13 +3515,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -3586,13 +3588,13 @@
 							"# load the delta tables from the source\r\n",
 							"try:\r\n",
 							"    attendance_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{attendance_pseudo_path}\", format='delta')\r\n",
-							"    #attendance_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{attendance_lookup_path}\", format='delta')\r\n",
 							"\r\n",
 							"    marks_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{marks_pseudo_path}\", format='delta')\r\n",
-							"    #marks_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{marks_lookup_path}\", format='delta')\r\n",
 							"\r\n",
 							"    demographics_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{demographics_pseudo_path}\", format='delta')\r\n",
 							"    demographics_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{demographics_lookup_path}\", format='delta')\r\n",
+							"\r\n",
+							"    images_df = spark.read.load(f\"{source_stage_p}/support_data/images\", format='delta')\r\n",
 							"\r\n",
 							"except AnalysisException as e:\r\n",
 							"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
@@ -3697,6 +3699,7 @@
 							"fact_student_mark_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_sectionmark), header=True, mode=\"overwrite\")\r\n",
 							"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
 							"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
+							"images_df.write.format('delta').save(oea.path(\"stage3p\", \"support_data/images\"), header=True, mode=\"overwrite\")\r\n",
 							""
 						],
 						"outputs": [],
@@ -4476,7 +4479,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fc664f25-28f8-4aaa-b74d-2637fe85b3f8"
+						"spark.autotune.trackingId": "c87cc1c8-1c38-4717-ae13-4976b59132f3"
 					}
 				},
 				"metadata": {
@@ -4494,7 +4497,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
