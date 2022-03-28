@@ -1,0 +1,33 @@
+{
+	"name": "Test",
+	"properties": {
+		"activities": [
+			{
+				"name": "Extract from source to stage1np",
+				"description": "Supporting Data files",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Copy_from_each_URL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"endpoints": {
+							"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data\",\"sinkFilename\": \"images.csv\"}]')",
+							"type": "Expression"
+						},
+						"sinkFilesystem": "stage1np",
+						"timezone": "Eastern Standard Time"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "OEA_Framework"
+		},
+		"annotations": []
+	}
+}
