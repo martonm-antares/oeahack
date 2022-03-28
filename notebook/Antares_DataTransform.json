@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "759f08ca-5abf-4ae4-be53-a755af7c6c2d"
+				"spark.autotune.trackingId": "4bfcc24b-15a6-4e8f-8d8a-d825aebd0f37"
 			}
 		},
 		"metadata": {
@@ -221,7 +221,7 @@
 					"fact_student_mark_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_sectionmark), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
-					"images_df.write.format('delta').save(oea.path(\"stage3p\", \"support_data/images\"), header=True, mode=\"overwrite\")\r\n",
+					"images_df.write.format('delta').save(oea.path(\"stage3p\", \"support_data/images_pseudo\"), header=True, mode=\"overwrite\")\r\n",
 					""
 				],
 				"execution_count": 5
