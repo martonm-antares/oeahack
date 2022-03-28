@@ -4476,7 +4476,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "9a6e94c0-769e-4a71-85f1-2ca6db3c9978"
+						"spark.autotune.trackingId": "4e2cb075-2b3b-424a-aafe-07dc34e46139"
 					}
 				},
 				"metadata": {
@@ -4494,6 +4494,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -4502,7 +4503,7 @@
 							"                                            ['student_id', 'string', 'hash'],\n",
 							"                                            ['school_year', 'string', 'partition-by'],\n",
 							"                                            ['school_id', 'string', 'no-op'],\n",
-							"                                            ['attendance_date', 'date', 'no-op'],\n",
+							"                                            ['attendance_date', 'timestamp', 'no-op'],\n",
 							"                                            ['all_day', 'string', 'no-op'],\n",
 							"                                            ['Period', 'short', 'no-op'],\n",
 							"                                            ['section_id', 'string', 'no-op'],\n",
@@ -4536,7 +4537,7 @@
 							"                                            ['Grade', 'string', 'no-op'],\n",
 							"                                            ['State ID', 'string', 'hash'],\n",
 							"                                            ['Status', 'string', 'no-op'],\n",
-							"                                            ['Birthdate', 'date', 'hash'],\n",
+							"                                            ['Birthdate', 'timestamp', 'hash'],\n",
 							"                                            ['Graduation Year', 'string', 'no-op'],\n",
 							"                                            ['Gender', 'string', 'no-op'],\n",
 							"                                            ['FederalRaceCategory', 'string', 'no-op'],\n",
