@@ -217,7 +217,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"endpoints": {
-							"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data\",\"sinkFilename\": \"images.csv\"}]')",
+							"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data/images\",\"sinkFilename\": \"images.csv\"}]')",
 							"type": "Expression"
 						},
 						"sinkFilesystem": "stage1np",

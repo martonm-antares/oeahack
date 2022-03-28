@@ -53,7 +53,7 @@
 				"defaultValue": [
 					{
 						"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv",
-						"sinkDirectory": "support_data",
+						"sinkDirectory": "support_data/images",
 						"sinkFilename": "images.csv"
 					}
 				]
@@ -65,11 +65,6 @@
 			"timezone": {
 				"type": "string",
 				"defaultValue": "Eastern Standard Time"
-			}
-		},
-		"variables": {
-			"currentDateTime": {
-				"type": "String"
 			}
 		},
 		"folder": {
