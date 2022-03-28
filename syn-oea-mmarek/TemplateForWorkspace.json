@@ -3490,7 +3490,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "d6533f51-f678-4fcc-adf6-d68ff6c70fcd"
+						"spark.autotune.trackingId": "759f08ca-5abf-4ae4-be53-a755af7c6c2d"
 					}
 				},
 				"metadata": {
@@ -3515,15 +3515,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -4479,7 +4477,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "c87cc1c8-1c38-4717-ae13-4976b59132f3"
+						"spark.autotune.trackingId": "6e70d662-e20f-4717-95e9-c4e5677bb8c8"
 					}
 				},
 				"metadata": {
@@ -4497,6 +4495,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -4558,7 +4557,7 @@
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 							"\n",
 							"        # now ingest the supporting datasets\n",
-							"        oea.ingest_incremental_data(\"support_data\", 'images', self.schemas['images'], 'Category', 'Category')\n",
+							"        oea.ingest_delta_data(\"support_data\", 'images', self.schemas['images'], 'Category', 'Category')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
