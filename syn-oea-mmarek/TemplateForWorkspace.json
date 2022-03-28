@@ -989,6 +989,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Test')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Extract from source to stage1np",
+						"description": "Supporting Data files",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy_from_each_URL",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"endpoints": {
+									"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data\",\"sinkFilename\": \"images.csv\"}]')",
+									"type": "Expression"
+								},
+								"sinkFilesystem": "stage1np",
+								"timezone": "Eastern Standard Time"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "OEA_Framework"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Copy_from_each_URL')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/create_SQLDB_stage3')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
