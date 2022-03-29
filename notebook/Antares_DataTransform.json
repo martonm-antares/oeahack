@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "985cc8e7-b63e-41a7-a5a1-f0198fbbfcf3"
+				"spark.autotune.trackingId": "1dacca53-ef60-42b7-9e87-51cc329c726b"
 			}
 		},
 		"metadata": {
@@ -202,7 +202,7 @@
 					"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 					"\r\n",
 					"# Supporting datasets\r\n",
-					"dim_images_df = images_df.select('Category', F.concat(images_df.Type, \",\", images_df.Content).alias('Image'))\r\n",
+					"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 					""
 				],
 				"execution_count": 4
