@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "60692be0-c77e-4df7-8ff5-224af1da2486"
+				"spark.autotune.trackingId": "0b6c25a5-d1b1-4553-9d90-8c029be070d8"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,8 @@
 					"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
 					"\n",
 					"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
-					"                                    ['Image', 'string', 'no-op']]                                    \n",
+					"                                    ['Type', 'string', 'no-op']\n",
+					"                                    ['Content', 'string', 'no-op']]                                    \n",
 					"\n",
 					"    def ingest(self):\n",
 					"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
