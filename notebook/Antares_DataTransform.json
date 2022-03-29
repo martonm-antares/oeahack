@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "1dacca53-ef60-42b7-9e87-51cc329c726b"
+				"spark.autotune.trackingId": "fb88443b-24f1-4aba-ba8e-e71cf32ea1a9"
 			}
 		},
 		"metadata": {
@@ -54,7 +54,7 @@
 					"from pyspark.sql.window import Window\r\n",
 					"import pyspark.sql.functions as F"
 				],
-				"execution_count": 1
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,20 @@
 				"source": [
 					"%run OEA_py"
 				],
-				"execution_count": 2
+				"execution_count": 5
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Load data from Stage 2"
+				]
 			},
 			{
 				"cell_type": "code",
@@ -89,6 +102,8 @@
 				},
 				"source": [
 					"source_system = 'generated_data'\r\n",
+					"\r\n",
+					"schoolYears = 2021\r\n",
 					"\r\n",
 					"# source table locations. We are only loading 1 year worth of data for this\r\n",
 					"attendance_pseudo_path = f'studentattendance_pseudo/school_year={schoolYears}'\r\n",
@@ -130,7 +145,20 @@
 					"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
 					""
 				],
-				"execution_count": 3
+				"execution_count": 6
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"##  Transform to target model"
+				]
 			},
 			{
 				"cell_type": "code",
@@ -147,8 +175,6 @@
 					"collapsed": false
 				},
 				"source": [
-					"# transform to target data model\r\n",
-					"\r\n",
 					"# create a temporary marks df that inlcudes an additional class_sk identifer - this will be used to remove a 'class' from this table\r\n",
 					"temp_mark_df = marks_pseudo_df.withColumn(\"class_sk\", \\\r\n",
 					"                                    F.dense_rank().over(Window.orderBy(marks_pseudo_df.school_year, \\\r\n",
@@ -205,7 +231,59 @@
 					"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 					""
 				],
-				"execution_count": 4
+				"execution_count": 7
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Data aggregation"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"# add total attendance per each student aggregate to the student dimension\r\n",
+					"temp_total_df = fact_student_attendance_df.groupBy(attendance_pseudo_df.student_id_pseudonym).count()\r\n",
+					"\r\n",
+					"temp_total_df = temp_total_df.withColumnRenamed('count', 'total_classes')\r\n",
+					"\r\n",
+					"temp_present_df = fact_student_attendance_df.groupBy(attendance_pseudo_df.student_id_pseudonym, attendance_pseudo_df.attendance_status).count() \\\r\n",
+					"                                            .where(F.col(\"attendance_status\") == \"Present\")\r\n",
+					"\r\n",
+					"temp_present_df = temp_present_df.withColumnRenamed('count', 'total_classes_present')\r\n",
+					"\r\n",
+					"temp_total_df = temp_total_df.withColumnRenamed('student_id_pseudonym', 'xstudent_id_pseudonym')\r\n",
+					"\r\n",
+					"joined_temp_df = temp_total_df.join(temp_present_df, temp_total_df.xstudent_id_pseudonym == temp_present_df.student_id_pseudonym, \"inner\")\r\n",
+					"\r\n",
+					"joined_temp_df = joined_temp_df.drop('student_id_pseudonym').drop('attendance_status')\r\n",
+					"\r\n",
+					"dim_student_pseudo_df = dim_student_pseudo_df.join(joined_temp_df, dim_student_pseudo_df.student_id_pseudonym == joined_temp_df.xstudent_id_pseudonym, \"inner\")\r\n",
+					"\r\n",
+					"dim_student_pseudo_df = dim_student_pseudo_df.drop('xstudent_id_pseudonym')\r\n",
+					"\r\n",
+					""
+				],
+				"execution_count": 18
 			},
 			{
 				"cell_type": "code",
@@ -233,7 +311,7 @@
 					"dim_images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
 					""
 				],
-				"execution_count": 5
+				"execution_count": null
 			}
 		]
 	}
