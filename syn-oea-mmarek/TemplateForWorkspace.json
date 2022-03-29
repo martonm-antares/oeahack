@@ -3490,7 +3490,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "c5f9208d-1aff-47a2-80a2-b29ad162b2e9"
+						"spark.autotune.trackingId": "985cc8e7-b63e-41a7-a5a1-f0198fbbfcf3"
 					}
 				},
 				"metadata": {
@@ -3515,15 +3515,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -4488,7 +4486,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "60692be0-c77e-4df7-8ff5-224af1da2486"
+						"spark.autotune.trackingId": "fb20abb9-7a1d-4967-8a77-d5d8d20298da"
 					}
 				},
 				"metadata": {
@@ -4506,6 +4504,7 @@
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
@@ -4559,7 +4558,8 @@
 							"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
 							"\n",
 							"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
-							"                                    ['Image', 'string', 'no-op']]                                    \n",
+							"                                    ['Type', 'string', 'no-op']\n",
+							"                                    ['Content', 'string', 'no-op']]                                    \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
