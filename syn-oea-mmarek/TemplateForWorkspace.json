@@ -4486,7 +4486,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fb20abb9-7a1d-4967-8a77-d5d8d20298da"
+						"spark.autotune.trackingId": "531714ba-5be9-4ef9-87c6-d561cb1e2040"
 					}
 				},
 				"metadata": {
@@ -4558,7 +4558,7 @@
 							"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
 							"\n",
 							"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
-							"                                    ['Type', 'string', 'no-op']\n",
+							"                                    ['Type', 'string', 'no-op'],\n",
 							"                                    ['Content', 'string', 'no-op']]                                    \n",
 							"\n",
 							"    def ingest(self):\n",
