@@ -3490,7 +3490,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "985cc8e7-b63e-41a7-a5a1-f0198fbbfcf3"
+						"spark.autotune.trackingId": "64247451-3436-4620-a4ca-0e3ce5ff6d9a"
 					}
 				},
 				"metadata": {
@@ -3515,13 +3515,15 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -3677,7 +3679,7 @@
 							"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 							"\r\n",
 							"# Supporting datasets\r\n",
-							"dim_images_df = images_df.select('Category', F.concat(images_df.Type, \",\", images_df.Content).alias('Image'))\r\n",
+							"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 							""
 						],
 						"outputs": [],
@@ -4486,7 +4488,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "531714ba-5be9-4ef9-87c6-d561cb1e2040"
+						"spark.autotune.trackingId": "59236938-7147-454a-82e6-b870f8660d9b"
 					}
 				},
 				"metadata": {
@@ -4504,7 +4506,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"class ContosoSIS(BaseOEAModule):\n",
 							"    def __init__(self, source_folder='generated_data', pseudonymize = True):\n",
