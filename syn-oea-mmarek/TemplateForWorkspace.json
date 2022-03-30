@@ -261,7 +261,7 @@
 							"waitOnCompletion": true,
 							"parameters": {
 								"endpoints": {
-									"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv\",\"sinkDirectory\": \"support_data/images\",\"sinkFilename\": \"images.csv\"}]')",
+									"value": "@json('[{\"URL\": \"https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/national.csv\",\"sinkDirectory\": \"support_data/national\",\"sinkFilename\": \"national.csv\"}]')",
 									"type": "Expression"
 								},
 								"sinkFilesystem": "stage1np",
@@ -876,7 +876,7 @@
 				"parameters": {
 					"URL": {
 						"type": "string",
-						"defaultValue": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv"
+						"defaultValue": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/national.csv"
 					},
 					"sinkFilesystem": {
 						"type": "string",
@@ -884,7 +884,7 @@
 					},
 					"sinkFilename": {
 						"type": "string",
-						"defaultValue": "support_data/images/images.csv"
+						"defaultValue": "support_data/national/national.csv"
 					}
 				},
 				"folder": {
@@ -958,9 +958,9 @@
 						"type": "array",
 						"defaultValue": [
 							{
-								"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv",
-								"sinkDirectory": "support_data/images",
-								"sinkFilename": "images.csv"
+								"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/national.csv",
+								"sinkDirectory": "support_data/national",
+								"sinkFilename": "national.csv"
 							}
 						]
 					},
@@ -2646,7 +2646,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "7e88a8b6-addd-4b0a-899d-0fbabbcae31f"
+						"spark.autotune.trackingId": "24329bd4-4501-4fcb-831d-7cab73ee1acc"
 					}
 				},
 				"metadata": {
@@ -2671,15 +2671,13 @@
 						"sparkVersion": "3.1",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"from pyspark.sql.window import Window\r\n",
 							"import pyspark.sql.functions as F"
@@ -2735,8 +2733,6 @@
 						"source": [
 							"source_system = 'generated_data'\r\n",
 							"\r\n",
-							"schoolYears = 2021\r\n",
-							"\r\n",
 							"# source table locations. We are only loading 1 year worth of data for this\r\n",
 							"attendance_pseudo_path = f'studentattendance_pseudo/school_year={schoolYears}'\r\n",
 							"attendance_lookup_path = f'studentattendance_lookup/school_year={schoolYears}'\r\n",
@@ -2746,7 +2742,7 @@
 							"demographics_lookup_path = 'studentdemographics_lookup'\r\n",
 							"\r\n",
 							"# supporting datasets\r\n",
-							"images_lookup_path = 'support_data/images_pseudo'\r\n",
+							"national_lookup_path = 'support_data/national_pseudo'\r\n",
 							"\r\n",
 							"# transformed table destinations (stage3)\r\n",
 							"dest_student_pseudo = f'{source_system}/dim_student_pseudo'\r\n",
@@ -2759,7 +2755,7 @@
 							"dest_student_marks_stats = f'{source_system}/fact_student_marks_stats'\r\n",
 							"\r\n",
 							"# supporting datasets\r\n",
-							"dest_images = f'{source_system}/images'\r\n",
+							"dest_national = f'{source_system}/national'\r\n",
 							"\r\n",
 							"source_stage_p = oea.stage2p\r\n",
 							"source_stage_np = oea.stage2np\r\n",
@@ -2773,7 +2769,7 @@
 							"    demographics_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{demographics_pseudo_path}\", format='delta')\r\n",
 							"    demographics_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{demographics_lookup_path}\", format='delta')\r\n",
 							"\r\n",
-							"    images_df = spark.read.load(f\"{source_stage_p}/{images_lookup_path}\", format='delta')\r\n",
+							"    national_df = spark.read.load(f\"{source_stage_p}/{national_lookup_path}\", format='delta')\r\n",
 							"\r\n",
 							"except AnalysisException as e:\r\n",
 							"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
@@ -2862,8 +2858,6 @@
 							"\r\n",
 							"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 							"\r\n",
-							"# Supporting datasets\r\n",
-							"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 							""
 						],
 						"outputs": [],
@@ -2961,7 +2955,8 @@
 							"fact_student_attendance_stats_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance_stats), header=True, mode=\"overwrite\")\r\n",
 							"fact_student_marks_stats.write.format('delta').save(oea.path(\"stage3p\", dest_student_marks_stats), header=True, mode=\"overwrite\")\r\n",
 							"\r\n",
-							"dim_images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
+							"#supporting datasets\r\n",
+							"national_df.write.format('delta').save(oea.path(\"stage3p\", dest_national), header=True, mode=\"overwrite\")\r\n",
 							""
 						],
 						"outputs": [],
@@ -3119,7 +3114,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "59236938-7147-454a-82e6-b870f8660d9b"
+						"spark.autotune.trackingId": "abb4d25a-e98e-42c6-9a42-90bd62f8f239"
 					}
 				},
 				"metadata": {
@@ -3176,7 +3171,7 @@
 							"                                            ['Middle Name', 'string', 'hash'],\n",
 							"                                            ['Secondary Email', 'string', 'hash'],\n",
 							"                                            ['Student Number', 'string', 'hash'],\n",
-							"                                            ['Grade', 'string', 'no-op'],\n",
+							"                                            ['Grade', 'integer', 'no-op'],\n",
 							"                                            ['State ID', 'string', 'hash'],\n",
 							"                                            ['Status', 'string', 'no-op'],\n",
 							"                                            ['Birthdate', 'string', 'hash'],\n",
@@ -3189,9 +3184,14 @@
 							"                                            ['LowIncome', 'integer', 'no-op'],\n",
 							"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
 							"\n",
-							"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
-							"                                    ['Type', 'string', 'no-op'],\n",
-							"                                    ['Content', 'string', 'no-op']]                                    \n",
+							"        self.schemas['national'] = [['id', 'integer', 'no-op'],\n",
+							"                                    ['Gender', 'string', 'no-op'],\n",
+							"                                    ['Income', 'string', 'no-op'],\n",
+							"                                    ['avg_attendance', 'double', 'no-op'],\n",
+							"                                    ['national_average_marks', 'double', 'no-op'],\n",
+							"                                    ['avg_gpa', 'double', 'no-op'],\n",
+							"                                    ['school_year', 'string', 'partition-by'],\n",
+							"                                    ['Grade', 'string', 'no-op']]                                    \n",
 							"\n",
 							"    def ingest(self):\n",
 							"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
@@ -3199,7 +3199,7 @@
 							"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 							"\n",
 							"        # now ingest the supporting datasets\n",
-							"        oea.ingest_delta_data(\"support_data\", 'images', self.schemas['images'], 'Category', 'Category')\n",
+							"        oea.ingest_delta_data(\"support_data\", 'national', self.schemas['national'], 'school_year', 'id')\n",
 							"\n",
 							"contoso_sis = ContosoSIS()"
 						],
