@@ -52,9 +52,9 @@
 				"type": "array",
 				"defaultValue": [
 					{
-						"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv",
-						"sinkDirectory": "support_data/images",
-						"sinkFilename": "images.csv"
+						"URL": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/national.csv",
+						"sinkDirectory": "support_data/national",
+						"sinkFilename": "national.csv"
 					}
 				]
 			},

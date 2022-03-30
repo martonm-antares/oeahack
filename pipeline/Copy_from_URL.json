@@ -80,7 +80,7 @@
 		"parameters": {
 			"URL": {
 				"type": "string",
-				"defaultValue": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/images.csv"
+				"defaultValue": "https://raw.githubusercontent.com/martonm-antares/OEA-Hack-Assessment/main/datasets/national.csv"
 			},
 			"sinkFilesystem": {
 				"type": "string",
@@ -88,7 +88,7 @@
 			},
 			"sinkFilename": {
 				"type": "string",
-				"defaultValue": "support_data/images/images.csv"
+				"defaultValue": "support_data/national/national.csv"
 			}
 		},
 		"folder": {

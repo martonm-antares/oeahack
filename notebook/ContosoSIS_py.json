@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "59236938-7147-454a-82e6-b870f8660d9b"
+				"spark.autotune.trackingId": "abb4d25a-e98e-42c6-9a42-90bd62f8f239"
 			}
 		},
 		"metadata": {
@@ -70,7 +70,7 @@
 					"                                            ['Middle Name', 'string', 'hash'],\n",
 					"                                            ['Secondary Email', 'string', 'hash'],\n",
 					"                                            ['Student Number', 'string', 'hash'],\n",
-					"                                            ['Grade', 'string', 'no-op'],\n",
+					"                                            ['Grade', 'integer', 'no-op'],\n",
 					"                                            ['State ID', 'string', 'hash'],\n",
 					"                                            ['Status', 'string', 'no-op'],\n",
 					"                                            ['Birthdate', 'string', 'hash'],\n",
@@ -83,9 +83,14 @@
 					"                                            ['LowIncome', 'integer', 'no-op'],\n",
 					"                                            ['CumulativeGPA', 'double', 'no-op']]\n",
 					"\n",
-					"        self.schemas['images'] = [['Category', 'string', 'no-op'],\n",
-					"                                    ['Type', 'string', 'no-op'],\n",
-					"                                    ['Content', 'string', 'no-op']]                                    \n",
+					"        self.schemas['national'] = [['id', 'integer', 'no-op'],\n",
+					"                                    ['Gender', 'string', 'no-op'],\n",
+					"                                    ['Income', 'string', 'no-op'],\n",
+					"                                    ['avg_attendance', 'double', 'no-op'],\n",
+					"                                    ['national_average_marks', 'double', 'no-op'],\n",
+					"                                    ['avg_gpa', 'double', 'no-op'],\n",
+					"                                    ['school_year', 'string', 'partition-by'],\n",
+					"                                    ['Grade', 'string', 'no-op']]                                    \n",
 					"\n",
 					"    def ingest(self):\n",
 					"        oea.ingest_incremental_data(self.source_folder, 'studentattendance', self.schemas['studentattendance'], 'school_year', 'id')\n",
@@ -93,7 +98,7 @@
 					"        oea.ingest_delta_data(self.source_folder, 'studentdemographics', self.schemas['studentdemographics'], 'school_year', 'id')\n",
 					"\n",
 					"        # now ingest the supporting datasets\n",
-					"        oea.ingest_delta_data(\"support_data\", 'images', self.schemas['images'], 'Category', 'Category')\n",
+					"        oea.ingest_delta_data(\"support_data\", 'national', self.schemas['national'], 'school_year', 'id')\n",
 					"\n",
 					"contoso_sis = ContosoSIS()"
 				],

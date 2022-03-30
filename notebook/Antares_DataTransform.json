@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "df24e265-a97c-45ca-866c-b21f8fa56071"
+				"spark.autotune.trackingId": "24329bd4-4501-4fcb-831d-7cab73ee1acc"
 			}
 		},
 		"metadata": {
@@ -103,8 +103,6 @@
 				"source": [
 					"source_system = 'generated_data'\r\n",
 					"\r\n",
-					"schoolYears = 2021\r\n",
-					"\r\n",
 					"# source table locations. We are only loading 1 year worth of data for this\r\n",
 					"attendance_pseudo_path = f'studentattendance_pseudo/school_year={schoolYears}'\r\n",
 					"attendance_lookup_path = f'studentattendance_lookup/school_year={schoolYears}'\r\n",
@@ -114,7 +112,7 @@
 					"demographics_lookup_path = 'studentdemographics_lookup'\r\n",
 					"\r\n",
 					"# supporting datasets\r\n",
-					"images_lookup_path = 'support_data/images_pseudo'\r\n",
+					"national_lookup_path = 'support_data/national_pseudo'\r\n",
 					"\r\n",
 					"# transformed table destinations (stage3)\r\n",
 					"dest_student_pseudo = f'{source_system}/dim_student_pseudo'\r\n",
@@ -127,7 +125,7 @@
 					"dest_student_marks_stats = f'{source_system}/fact_student_marks_stats'\r\n",
 					"\r\n",
 					"# supporting datasets\r\n",
-					"dest_images = f'{source_system}/images'\r\n",
+					"dest_national = f'{source_system}/national'\r\n",
 					"\r\n",
 					"source_stage_p = oea.stage2p\r\n",
 					"source_stage_np = oea.stage2np\r\n",
@@ -141,7 +139,7 @@
 					"    demographics_pseudo_df = spark.read.load(f\"{source_stage_p}/{source_system}/{demographics_pseudo_path}\", format='delta')\r\n",
 					"    demographics_lookup_df = spark.read.load(f\"{source_stage_np}/{source_system}/{demographics_lookup_path}\", format='delta')\r\n",
 					"\r\n",
-					"    images_df = spark.read.load(f\"{source_stage_p}/{images_lookup_path}\", format='delta')\r\n",
+					"    national_df = spark.read.load(f\"{source_stage_p}/{national_lookup_path}\", format='delta')\r\n",
 					"\r\n",
 					"except AnalysisException as e:\r\n",
 					"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
@@ -229,8 +227,6 @@
 					"\r\n",
 					"dim_student_lookup_df = demographics_lookup_df.withColumnRenamed('SIS_ID_pseudonym', 'student_id_pseudonym')\r\n",
 					"\r\n",
-					"# Supporting datasets\r\n",
-					"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 					""
 				],
 				"execution_count": 15
@@ -326,7 +322,8 @@
 					"fact_student_attendance_stats_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance_stats), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_marks_stats.write.format('delta').save(oea.path(\"stage3p\", dest_student_marks_stats), header=True, mode=\"overwrite\")\r\n",
 					"\r\n",
-					"dim_images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
+					"#supporting datasets\r\n",
+					"national_df.write.format('delta').save(oea.path(\"stage3p\", dest_national), header=True, mode=\"overwrite\")\r\n",
 					""
 				],
 				"execution_count": 17
