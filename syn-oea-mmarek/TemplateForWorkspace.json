@@ -2646,7 +2646,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "876081e6-a670-4c06-abda-a81e98806280"
+						"spark.autotune.trackingId": "7e88a8b6-addd-4b0a-899d-0fbabbcae31f"
 					}
 				},
 				"metadata": {
@@ -2685,7 +2685,7 @@
 							"import pyspark.sql.functions as F"
 						],
 						"outputs": [],
-						"execution_count": 1
+						"execution_count": 12
 					},
 					{
 						"cell_type": "code",
@@ -2704,7 +2704,7 @@
 							"%run OEA_py"
 						],
 						"outputs": [],
-						"execution_count": 2
+						"execution_count": 13
 					},
 					{
 						"cell_type": "markdown",
@@ -2756,6 +2756,7 @@
 							"dest_student_attendance = f'{source_system}/fact_student_attendance'\r\n",
 							"dest_student_sectionmark = f'{source_system}/fact_student_sectionmark'\r\n",
 							"dest_student_attendance_stats = f'{source_system}/fact_student_attendance_stats'\r\n",
+							"dest_student_marks_stats = f'{source_system}/fact_student_marks_stats'\r\n",
 							"\r\n",
 							"# supporting datasets\r\n",
 							"dest_images = f'{source_system}/images'\r\n",
@@ -2779,7 +2780,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 3
+						"execution_count": 14
 					},
 					{
 						"cell_type": "markdown",
@@ -2866,7 +2867,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 4
+						"execution_count": 15
 					},
 					{
 						"cell_type": "markdown",
@@ -2920,15 +2921,19 @@
 							"fact_student_attendance_stats_df = student_attendance_stats_df.withColumn('risk_level', F.when((student_attendance_stats_df.total_attendance_percentage < 0.8), F.lit(\"High Risk\")) \\\r\n",
 							"                                                            .otherwise(F.lit(\"Low Risk\")))\r\n",
 							"\r\n",
-							"display(student_attendance_stats_df)\r\n",
+							"# add the average marks per student to a new fact table\r\n",
+							"fact_student_marks_stats = fact_student_mark_df.groupBy('student_id_pseudonym').avg('numeric_grade_earned')\r\n",
 							"\r\n",
-							"#dim_student_pseudo_df = dim_student_pseudo_df.join(joined_temp_df, dim_student_pseudo_df.student_id_pseudonym == joined_temp_df.xstudent_id_pseudonym, \"inner\")\r\n",
-							"#dim_student_pseudo_df = dim_student_pseudo_df.drop('xstudent_id_pseudonym')\r\n",
+							"fact_student_marks_stats = fact_student_marks_stats.withColumnRenamed('avg(numeric_grade_earned)', 'average_grade')\r\n",
+							"\r\n",
+							"# add a risk indicator column\r\n",
+							"fact_student_marks_stats = fact_student_marks_stats.withColumn('risk_level', F.when((fact_student_marks_stats.average_grade < 75), F.lit(\"High Risk\")) \\\r\n",
+							"                                                            .otherwise(F.lit(\"Low Risk\")))\r\n",
 							"\r\n",
 							""
 						],
 						"outputs": [],
-						"execution_count": 10
+						"execution_count": 22
 					},
 					{
 						"cell_type": "code",
@@ -2954,13 +2959,13 @@
 							"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
 							"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
 							"fact_student_attendance_stats_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance_stats), header=True, mode=\"overwrite\")\r\n",
-							"\r\n",
+							"fact_student_marks_stats.write.format('delta').save(oea.path(\"stage3p\", dest_student_marks_stats), header=True, mode=\"overwrite\")\r\n",
 							"\r\n",
 							"dim_images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
 							""
 						],
 						"outputs": [],
-						"execution_count": 6
+						"execution_count": 17
 					}
 				]
 			},
