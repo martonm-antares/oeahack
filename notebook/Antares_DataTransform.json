@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e1808358-3f03-4958-84cd-8602066b9f3c"
+				"spark.autotune.trackingId": "f9411ca9-af78-4a5d-a325-468abf3d4cdf"
 			}
 		},
 		"metadata": {
@@ -54,7 +54,7 @@
 					"from pyspark.sql.window import Window\r\n",
 					"import pyspark.sql.functions as F"
 				],
-				"execution_count": 4
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,7 @@
 				"source": [
 					"%run OEA_py"
 				],
-				"execution_count": 5
+				"execution_count": 2
 			},
 			{
 				"cell_type": "markdown",
@@ -123,6 +123,7 @@
 					"dest_student_enrolment = f'{source_system}/fact_student_enrolment'\r\n",
 					"dest_student_attendance = f'{source_system}/fact_student_attendance'\r\n",
 					"dest_student_sectionmark = f'{source_system}/fact_student_sectionmark'\r\n",
+					"dest_student_attendance_stats = f'{source_system}/fact_student_attendance_stats'\r\n",
 					"\r\n",
 					"# supporting datasets\r\n",
 					"dest_images = f'{source_system}/images'\r\n",
@@ -145,7 +146,7 @@
 					"    raise ValueError(\"MM--Failed to load. Check the paths.\\nMore info below:\\n\" + str(e)) \r\n",
 					""
 				],
-				"execution_count": 6
+				"execution_count": 3
 			},
 			{
 				"cell_type": "markdown",
@@ -231,7 +232,7 @@
 					"dim_images_df = images_df.select('Category', F.concat_ws(',', images_df.Type, images_df.Content).alias('Image'))\r\n",
 					""
 				],
-				"execution_count": 7
+				"execution_count": 4
 			},
 			{
 				"cell_type": "markdown",
@@ -261,7 +262,7 @@
 					"collapsed": false
 				},
 				"source": [
-					"# add total attendance per each student aggregate to the student dimension\r\n",
+					"# add total attendance per each student aggregate to a fact table (fact_student_attendance_stats)\r\n",
 					"temp_total_df = fact_student_attendance_df.groupBy(attendance_pseudo_df.student_id_pseudonym).count()\r\n",
 					"\r\n",
 					"temp_total_df = temp_total_df.withColumnRenamed('count', 'total_classes')\r\n",
@@ -275,15 +276,24 @@
 					"\r\n",
 					"joined_temp_df = temp_total_df.join(temp_present_df, temp_total_df.xstudent_id_pseudonym == temp_present_df.student_id_pseudonym, \"inner\")\r\n",
 					"\r\n",
-					"joined_temp_df = joined_temp_df.drop('student_id_pseudonym').drop('attendance_status')\r\n",
+					"student_attendance_stats_df = joined_temp_df.drop('xstudent_id_pseudonym').drop('attendance_status')\r\n",
 					"\r\n",
-					"dim_student_pseudo_df = dim_student_pseudo_df.join(joined_temp_df, dim_student_pseudo_df.student_id_pseudonym == joined_temp_df.xstudent_id_pseudonym, \"inner\")\r\n",
+					"# add the percentage attendance for each student\r\n",
+					"student_attendance_stats_df = student_attendance_stats_df.withColumn('total_attendance_percentage', \\\r\n",
+					"                             (student_attendance_stats_df.total_classes_present / student_attendance_stats_df.total_classes))\r\n",
 					"\r\n",
-					"dim_student_pseudo_df = dim_student_pseudo_df.drop('xstudent_id_pseudonym')\r\n",
+					"# add the low attendance at risk flag to each student \r\n",
+					"fact_student_attendance_stats_df = student_attendance_stats_df.withColumn('risk_level', F.when((student_attendance_stats_df.total_attendance_percentage < 0.8), F.lit(\"High Risk\")) \\\r\n",
+					"                                                            .otherwise(F.lit(\"Low Risk\")))\r\n",
+					"\r\n",
+					"display(student_attendance_stats_df)\r\n",
+					"\r\n",
+					"#dim_student_pseudo_df = dim_student_pseudo_df.join(joined_temp_df, dim_student_pseudo_df.student_id_pseudonym == joined_temp_df.xstudent_id_pseudonym, \"inner\")\r\n",
+					"#dim_student_pseudo_df = dim_student_pseudo_df.drop('xstudent_id_pseudonym')\r\n",
 					"\r\n",
 					""
 				],
-				"execution_count": 18
+				"execution_count": 10
 			},
 			{
 				"cell_type": "code",
@@ -308,10 +318,13 @@
 					"fact_student_mark_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_sectionmark), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_attendance_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance), header=True, mode=\"overwrite\")\r\n",
 					"fact_student_enrolment_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_enrolment), header=True, mode=\"overwrite\")\r\n",
+					"fact_student_attendance_stats_df.write.format('delta').save(oea.path(\"stage3p\", dest_student_attendance_stats), header=True, mode=\"overwrite\")\r\n",
+					"\r\n",
+					"\r\n",
 					"dim_images_df.write.format('delta').save(oea.path(\"stage3p\", dest_images), header=True, mode=\"overwrite\")\r\n",
 					""
 				],
-				"execution_count": null
+				"execution_count": 6
 			}
 		]
 	}
